@@ -1,11 +1,15 @@
-import Tides from './Tides';
+import Day from './Day';
 
-const Dashboard = ({ day, tides }) => (
+const Upcoming = ({ futureDays, tides }) => (
   <div className="border-2 border-orange-600 p-5 relative">
-    <div className="flex flex-col">
-      <h1 className="headingText text-blue-700 ml-2 text-2xl tracking-wide leading-7">Today:</h1>
-      <Tides day={day} tides={tides} />
+    <div className="flex justify-between">
+      {futureDays
+        // .sort((a, b) => a.dt < b.dt)
+        .map((day, i) => (
+          <Day key={day.dt + i} day={day} tides={tides} />
+        ))}
     </div>
+
     <style jsx>{`
       .headingText {
         font-family: 'Open Sans', sans-serif;
@@ -19,4 +23,4 @@ const Dashboard = ({ day, tides }) => (
     `}</style>
   </div>
 );
-export default Dashboard;
+export default Upcoming;
