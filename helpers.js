@@ -12,6 +12,7 @@ export async function getMonthOfTides(month) {
 }
 
 export function findFutureDays(date) {
+  if (!date) return;
   const isNow1 = add(date, { days: 1 });
   const isNow2 = add(date, { days: 2 });
   const isNow3 = add(date, { days: 3 });
@@ -37,6 +38,7 @@ export function findFutureDays(date) {
 }
 
 export function getTidesData(date) {
+  if (!date) return;
   const isNow3 = add(date, { days: 3 });
   const monthOfCurrentDate = format(date, 'yyyy-MM');
   const monthOfLatestDate = format(isNow3, 'yyyy-MM');

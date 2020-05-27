@@ -7,8 +7,8 @@ import { findFutureDays, getTidesData } from '../helpers';
 
 const DateChangeWrapper = () => {
   const [datetime, setDateTime] = useState(Date.now());
-  const [dayNow, setDateDayNow] = useState(format(datetime, 'M-dd-yyyy'));
-  const [currentMonth, setCurrentMonth] = useState(format(datetime, 'MM-yyyy'));
+  const [dayNow, setDateDayNow] = useState(format(Date.now(), 'M-dd-yyyy'));
+  const [currentMonth, setCurrentMonth] = useState(format(Date.now(), 'MM-yyyy'));
   const [futureDays, setFutureDays] = useState(findFutureDays(Date.now()));
   const [tides, setTides] = useState('');
 
@@ -30,6 +30,7 @@ const DateChangeWrapper = () => {
 
   // run effect when it is a new day
   useEffect(() => {
+    if (!datetime) return;
     const whatMonthIsIt = format(datetime, 'MM-yyyy');
     setCurrentMonth(whatMonthIsIt);
   }, [dayNow]);

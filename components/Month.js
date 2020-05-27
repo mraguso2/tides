@@ -8,6 +8,7 @@ const Month = ({ month }) => {
   const [monthDays, setMonthDays] = useState('');
 
   function buildMonth(month) {
+    if (!month) return;
     const currentYear = month.slice(3);
     const currentMonth = month.slice(0, 2);
     const firstExactDay = `${month.slice(0, 3)}01-${month.slice(3)}`;
@@ -39,7 +40,7 @@ const Month = ({ month }) => {
     <div className="border-2 border-orange-600 p-3 relative">
       <div className="flex">
         <h3 className="headingText w-full text-center text-blue-700 text-md">
-          {format(new Date(month.slice(3), month.slice(0, 2), 1), 'MMM-yyyy')}
+          {month ? format(new Date(month.slice(3), month.slice(0, 2), 1), 'MMM-yyyy') : ''}
         </h3>
       </div>
       <div className="flex flex-wrap">

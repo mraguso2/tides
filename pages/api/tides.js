@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import catchErrors from '../../middleware/withErrorHandler';
 
 const getTides = async (req, res) => {
