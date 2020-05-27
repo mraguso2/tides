@@ -87,17 +87,22 @@ export function findDayTides(date, tides) {
   // if (!tides || !tides.data || typeof tides.data !== 'object') return;
   // console.log(typeof tides.data !== 'object');
 
-  const getDayTides = tides.data
-    .filter(tide => {
-      const tideDate = format(new Date(tide.eventTime), 'M-dd-yyyy');
-      return tideDate === date;
-    })
-    .sort((a, b) => a.eventTime < b.eventTime);
+  try {
+    const getDayTides = tides.data
+      .filter(tide => {
+        const tideDate = format(new Date(tide.eventTime), 'M-dd-yyyy');
+        return tideDate === date;
+      })
+      .sort((a, b) => a.eventTime < b.eventTime);
 
-  const finalDayTides = getDayTides.map(tides => {
-    const { eventTime } = tides;
-    const tideTime = format(new Date(eventTime), 'h:mm aaaa');
-    return { ...tides, tideTime };
-  });
-  return finalDayTides;
+    const finalDayTides = getDayTides.map(tides => {
+      const { eventTime } = tides;
+      const tideTime = format(new Date(eventTime), 'h:mm aaaa');
+      // console.log(format(new Date(eventTime), 'h:mm aaaa'));
+      return { ...tides, tideTime };
+    });
+    return finalDayTides;
+  } catch (error) {
+    console.error(error);
+  }
 }
