@@ -11,8 +11,7 @@ export async function getMonthOfTides(month) {
   }
 }
 
-export function findFutureDays(date) {
-  if (!date) return;
+export function findFutureDays(date = Date.now()) {
   const isNow1 = add(date, { days: 1 });
   const isNow2 = add(date, { days: 2 });
   const isNow3 = add(date, { days: 3 });
@@ -37,8 +36,8 @@ export function findFutureDays(date) {
   return upcoming;
 }
 
-export function getTidesData(date) {
-  if (!date) return;
+export function getTidesData(date = Date.now()) {
+  // find out what is 3 days from now
   const isNow3 = add(date, { days: 3 });
   const monthOfCurrentDate = format(date, 'yyyy-MM');
   const monthOfLatestDate = format(isNow3, 'yyyy-MM');
@@ -86,23 +85,18 @@ export function findDayTides(date, tides) {
   if (!tides || !tides.data) return;
   // if (!tides || !tides.data || typeof tides.data !== 'object') return;
   // console.log(typeof tides.data !== 'object');
+  console.log(tides.data);
+  const getDayTides = tides.data
+    .filter(tide => {
+      const tideDate = format(new Date(tide.eventTime), 'M-dd-yyyy');
+      return tideDate === date;
+    })
+    .sort((a, b) => a.eventTime < b.eventTime);
 
-  try {
-    const getDayTides = tides.data
-      .filter(tide => {
-        const tideDate = format(new Date(tide.eventTime), 'M-dd-yyyy');
-        return tideDate === date;
-      })
-      .sort((a, b) => a.eventTime < b.eventTime);
-
-    const finalDayTides = getDayTides.map(tides => {
-      const { eventTime } = tides;
-      const tideTime = format(new Date(eventTime), 'h:mm aaaa');
-      // console.log(format(new Date(eventTime), 'h:mm aaaa'));
-      return { ...tides, tideTime };
-    });
-    return finalDayTides;
-  } catch (error) {
-    console.error(error);
-  }
+  const finalDayTides = getDayTides.map(tides => {
+    const { eventTime } = tides;
+    const tideTime = format(new Date(eventTime), 'h:mm aaaa');
+    return { ...tides, tideTime };
+  });
+  return finalDayTides;
 }

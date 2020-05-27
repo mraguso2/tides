@@ -3,7 +3,9 @@ import Tides from './Tides';
 const Dashboard = ({ day, tides }) => (
   <div className="border-2 border-orange-600 p-5 relative">
     <div className="flex flex-col">
-      <h1 className="headingText text-blue-700 ml-2 text-2xl tracking-wide leading-7">Today:</h1>
+      <h1 className="headingText text-blue-700 ml-2 text-2xl tracking-wide leading-7">
+        Today: {day}
+      </h1>
       <Tides day={day} tides={tides} />
     </div>
     <style jsx>{`

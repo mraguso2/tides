@@ -7,6 +7,7 @@ const Tides = ({ day, tides }) => {
   // const [dayTides, setDayTides] = useState('');
 
   useEffect(() => {
+    if (!tides) return;
     const tidy = findDayTides(day, tides);
     setDayTides(tidy);
   }, [tides]);

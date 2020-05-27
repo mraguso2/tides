@@ -26,11 +26,7 @@ const DateChangeWrapper = () => {
   useEffect(() => {
     const nextDays = findFutureDays(datetime);
     setFutureDays(nextDays);
-  }, [dayNow]);
 
-  // run effect when it is a new day
-  useEffect(() => {
-    if (!datetime) return;
     const whatMonthIsIt = format(datetime, 'MM-yyyy');
     setCurrentMonth(whatMonthIsIt);
   }, [dayNow]);
