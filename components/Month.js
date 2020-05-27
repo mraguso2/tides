@@ -28,7 +28,8 @@ const Month = ({ month }) => {
   }
 
   useEffect(() => {
-    const tideDets = getTidesMonth(month);
+    const apiMonth = `${month.slice(3)}-${month.slice(0, 2)}`;
+    const tideDets = getTidesMonth(apiMonth);
     const daysInTheMonth = buildMonth(month);
     setTides(tideDets);
     setMonthDays(daysInTheMonth);
