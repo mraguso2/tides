@@ -83,6 +83,7 @@ export function getTidesMonth(month) {
 export function findDayTides(date, tides) {
   if (!tides || !tides.data) return;
   // if (!tides || !tides.data || typeof tides.data !== 'object') return;
+  // console.log(typeof tides.data !== 'object');
 
   const getDayTides = tides.data
     .filter(tide => {

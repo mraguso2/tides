@@ -3,7 +3,8 @@ import { format } from 'date-fns';
 import { findDayTides } from '../helpers';
 
 const Tides = ({ day, tides }) => {
-  const [dayTides, setDayTides] = useState(findDayTides(day, tides));
+  // const [dayTides, setDayTides] = useState(findDayTides(day, tides));
+  const [dayTides, setDayTides] = useState('');
 
   useEffect(() => {
     const tidy = findDayTides(day, tides);
