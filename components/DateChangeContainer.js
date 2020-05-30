@@ -7,7 +7,7 @@ import { findFutureDays, getTidesData } from '../helpers';
 
 const DateChangeWrapper = () => {
   const [datetime, setDateTime] = useState(Date.now());
-  const [dayNow, setDateDayNow] = useState(format(Date.now(), 'M-dd-yyyy'));
+  const [date, setDate] = useState(format(Date.now(), 'M-dd-yyyy'));
   const [currentMonth, setCurrentMonth] = useState(format(Date.now(), 'MM-yyyy'));
   const [futureDays, setFutureDays] = useState(findFutureDays(Date.now()));
   const [tides, setTides] = useState('');
@@ -16,7 +16,7 @@ const DateChangeWrapper = () => {
   useEffect(() => {
     const everySecond = setInterval(() => {
       setDateTime(Date.now());
-      setDateDayNow(format(Date.now(), 'M-dd-yyyy'));
+      setDate(format(Date.now(), 'M-dd-yyyy'));
       // console.log('tick-tock');
     }, 1000);
     return () => clearInterval(everySecond);
@@ -29,7 +29,7 @@ const DateChangeWrapper = () => {
 
     const whatMonthIsIt = format(datetime, 'MM-yyyy');
     setCurrentMonth(whatMonthIsIt);
-  }, [dayNow]);
+  }, [date]);
 
   useEffect(() => {
     async function tippyTides() {
@@ -41,7 +41,7 @@ const DateChangeWrapper = () => {
 
   return (
     <main className="border-2 border-green-600">
-      <Dashboard day={dayNow} tides={tides} />
+      <Dashboard date={date} tides={tides} />
       <Upcoming futureDays={futureDays} tides={tides} />
       <Month month={currentMonth} />
       <style jsx>{`

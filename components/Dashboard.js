@@ -1,12 +1,12 @@
 import Tides from './Tides';
 
-const Dashboard = ({ day, tides }) => (
+const Dashboard = ({ date, tides }) => (
   <div className="border-2 border-orange-600 p-5 relative">
     <div className="flex flex-col">
       <h1 className="headingText text-blue-700 ml-2 text-2xl tracking-wide leading-7">
-        Today: {day}
+        Today: {date}
       </h1>
-      <Tides day={day} tides={tides} />
+      <Tides date={date} tides={tides} />
     </div>
     <style jsx>{`
       .headingText {

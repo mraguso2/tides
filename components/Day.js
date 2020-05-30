@@ -6,7 +6,7 @@ const Day = ({ day, tides }) => (
       <h3 className="headingText text-blue-700 text-md">
         {day.dayOfWeek}, {day.date}
       </h3>
-      <Tides day={day.date} tides={tides} />
+      <Tides date={day.date} tides={tides} />
     </div>
 
     <style jsx>{`

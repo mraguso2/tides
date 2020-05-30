@@ -2,21 +2,21 @@ import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { findDayTides } from '../helpers';
 
-const Tides = ({ day, tides }) => {
-  const [dayTides, setDayTides] = useState(findDayTides(day, tides));
+const Tides = ({ date, tides }) => {
+  const [dateTides, setDateTides] = useState(findDayTides(date, tides));
   // const [dayTides, setDayTides] = useState('');
 
   useEffect(() => {
     if (!tides) return;
-    const tidy = findDayTides(day, tides);
-    setDayTides(tidy);
-  }, [tides]);
+    const tidy = findDayTides(date, tides);
+    setDateTides(tidy);
+  }, [tides, date]);
 
   return (
     <div className="border-2 border-orange-600 p-3 relative">
       <div className="">
-        {dayTides
-          ? dayTides.map((tide, i) => (
+        {dateTides
+          ? dateTides.map((tide, i) => (
               <p key={i} className="tideText text-blue-700 text-sm">
                 {tide.type}: {tide.tideTime}
               </p>

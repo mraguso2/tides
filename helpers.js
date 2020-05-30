@@ -11,27 +11,21 @@ export async function getMonthOfTides(month) {
   }
 }
 
+export function buildDay(datetime = Date.now(), offset = 0) {
+  const calcNow = add(datetime, { days: offset });
+  return {
+    dt: calcNow,
+    dayOfWeek: format(calcNow, 'EEEE'),
+    date: format(calcNow, 'M-dd-yyyy')
+  };
+}
+
 export function findFutureDays(date = Date.now()) {
-  const isNow1 = add(date, { days: 1 });
-  const isNow2 = add(date, { days: 2 });
-  const isNow3 = add(date, { days: 3 });
-  const upcoming = [
-    {
-      dt: isNow1,
-      dayOfWeek: format(isNow1, 'EEEE'),
-      date: format(isNow1, 'M-dd-yyyy')
-    },
-    {
-      dt: isNow2,
-      dayOfWeek: format(isNow2, 'EEEE'),
-      date: format(isNow2, 'M-dd-yyyy')
-    },
-    {
-      dt: isNow3,
-      dayOfWeek: format(isNow3, 'EEEE'),
-      date: format(isNow3, 'M-dd-yyyy')
-    }
-  ];
+  const isNow1 = buildDay(date, 1);
+  const isNow2 = buildDay(date, 2);
+  const isNow3 = buildDay(date, 3);
+
+  const upcoming = [isNow1, isNow2, isNow3];
 
   return upcoming;
 }
