@@ -36,62 +36,63 @@ export function findFutureDays(date = Date.now()) {
   return upcoming;
 }
 
-export function getTidesData(date = Date.now()) {
+export async function getTidesData(date = Date.now()) {
   // find out what is 3 days from now
   const isNow3 = add(date, { days: 3 });
   const monthOfCurrentDate = format(date, 'yyyy-MM');
   const monthOfLatestDate = format(isNow3, 'yyyy-MM');
   let tidesObj = {};
+  let currentMonth = {};
+  let nextMonth = {};
 
-  // check if current month tides are saved
+  // check if current month saved
   if (!window.localStorage.getItem(monthOfCurrentDate)) {
-    getMonthOfTides(monthOfCurrentDate);
-    return;
+    currentMonth = await getMonthOfTides(monthOfCurrentDate);
+  } else {
+    currentMonth = JSON.parse(window.localStorage.getItem(monthOfCurrentDate));
   }
-
-  // grab the current month of tides
-  const currentMonthSaved = JSON.parse(window.localStorage.getItem(monthOfCurrentDate));
-
-  // check if the latest date month = current month date
+  // check if you need to get next month
   if (monthOfCurrentDate !== monthOfLatestDate) {
     // check if latest month tides saved
     if (!window.localStorage.getItem(monthOfLatestDate)) {
-      getMonthOfTides(monthOfLatestDate);
-      return;
+      nextMonth = await getMonthOfTides(monthOfLatestDate);
+    } else {
+      nextMonth = JSON.parse(window.localStorage.getItem(monthOfLatestDate));
     }
-
-    const futureMonthSaved = JSON.parse(window.localStorage.getItem(monthOfLatestDate));
-    tidesObj = { ...currentMonthSaved, ...futureMonthSaved };
+    tidesObj = { data: [...currentMonth.data, ...nextMonth.data] };
   } else {
-    tidesObj = { ...currentMonthSaved };
+    tidesObj = { data: [...currentMonth.data] };
   }
-  return tidesObj;
+
+  const data = Array.from(new Set(tidesObj.data.map(a => a.eventTime)))
+    .map(eventTime => tidesObj.data.find(a => a.eventTime === eventTime))
+    .sort((a, b) => a.eventTime < b.eventTime);
+
+  return { data };
 }
 
-export function getTidesMonth(month) {
+export async function getTidesMonth(month) {
+  let currentMonth = {};
   // check if current month tides are saved
   if (!window.localStorage.getItem(month)) {
-    getMonthOfTides(month);
-    return;
+    currentMonth = await getMonthOfTides(month);
+  } else {
+    // grab the current month of tides
+    currentMonth = JSON.parse(window.localStorage.getItem(month));
   }
-
-  // grab the current month of tides
-  const currentMonthSaved = JSON.parse(window.localStorage.getItem(month));
-  const tidesObj = { ...currentMonthSaved };
+  const tidesObj = { data: [...currentMonth.data] };
   return tidesObj;
 }
 
 export function findDayTides(date, tides) {
   if (!tides || !tides.data) return;
-  // if (!tides || !tides.data || typeof tides.data !== 'object') return;
-  // console.log(typeof tides.data !== 'object');
-  console.log(tides.data);
+
   const getDayTides = tides.data
     .filter(tide => {
       const tideDate = format(new Date(tide.eventTime), 'M-dd-yyyy');
       return tideDate === date;
     })
-    .sort((a, b) => a.eventTime < b.eventTime);
+    .sort((a, b) => new Date(a.eventTime) - new Date(b.eventTime));
 
   const finalDayTides = getDayTides.map(tides => {
     const { eventTime } = tides;

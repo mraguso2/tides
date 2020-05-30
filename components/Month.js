@@ -4,6 +4,7 @@ import Tides from './Tides';
 import { getTidesMonth } from '../helpers';
 
 const Month = ({ month }) => {
+  const [selectedMonth, setSelectedMonth] = useState(month);
   const [tides, setTides] = useState('');
   const [monthDays, setMonthDays] = useState('');
 
@@ -11,9 +12,10 @@ const Month = ({ month }) => {
     if (!month) return;
     const currentYear = month.slice(3);
     const currentMonth = month.slice(0, 2);
-    const firstExactDay = `${month.slice(0, 3)}01-${month.slice(3)}`;
-    const startingPosition = new Date(firstExactDay).getDay();
-    const lastDay = format(endOfMonth(new Date(firstExactDay)), 'dd');
+    // const firstExactDay = `${month.slice(0, 3)}01-${month.slice(3)}`;
+    const startingPosition = new Date(currentYear, currentMonth - 1, 1).getDay();
+    const lastDay = endOfMonth(new Date(currentYear, currentMonth - 1, 1)).getDate();
+
     const blanks = [0, 1, 2, 3, 4, 5, 6]
       .filter(val => val < startingPosition)
       .map(val => ({
@@ -25,16 +27,20 @@ const Month = ({ month }) => {
       const nextDay = `${currentMonth}-${currentDay}-${currentYear}`;
       daysInMonth.push({ nextDay, currentDay });
     }
+    console.log(blanks);
     return [...blanks, ...daysInMonth];
   }
 
   useEffect(() => {
-    const apiMonth = `${month.slice(3)}-${month.slice(0, 2)}`;
-    const tideDets = getTidesMonth(apiMonth);
-    const daysInTheMonth = buildMonth(month);
-    setTides(tideDets);
-    setMonthDays(daysInTheMonth);
-  }, []);
+    async function tidesMonth() {
+      const apiMonth = `${month.slice(3)}-${month.slice(0, 2)}`;
+      const tideDets = await getTidesMonth(apiMonth);
+      const daysInTheMonth = buildMonth(selectedMonth);
+      setTides(tideDets);
+      setMonthDays(daysInTheMonth);
+    }
+    tidesMonth();
+  }, [selectedMonth]);
 
   return (
     <div className="border-2 border-orange-600 p-3 relative">

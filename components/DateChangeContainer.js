@@ -32,8 +32,11 @@ const DateChangeWrapper = () => {
   }, [dayNow]);
 
   useEffect(() => {
-    const demTides = getTidesData(datetime);
-    setTides(demTides);
+    async function tippyTides() {
+      const demTides = await getTidesData(datetime);
+      setTides(demTides);
+    }
+    tippyTides();
   }, [datetime]);
 
   return (

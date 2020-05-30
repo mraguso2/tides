@@ -1,7 +1,7 @@
 import Day from './Day';
 
 const Upcoming = ({ futureDays, tides }) => (
-  <div className="border-2 border-orange-600 p-5 relative">
+  <div className="border-2 border-orange-600 relative">
     <div className="flex justify-between">
       {futureDays
         // .sort((a, b) => a.dt < b.dt)
