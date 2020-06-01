@@ -15,8 +15,13 @@ const getTides = async (req, res) => {
 
   const flattenTides = [].concat(...dayTides);
 
-  const data = Array.from(new Set(flattenTides.map(a => a.eventTime)))
-    .map(eventTime => flattenTides.find(a => a.eventTime === eventTime))
+  const editedTides = flattenTides.map(tide => {
+    const estTime = `${tide.eventTime}-04:00`;
+    return { ...tide, eventTime: estTime };
+  });
+
+  const data = Array.from(new Set(editedTides.map(a => a.eventTime)))
+    .map(eventTime => editedTides.find(a => a.eventTime === eventTime))
     .sort((a, b) => a.eventTime < b.eventTime);
 
   res.statusCode = 200;

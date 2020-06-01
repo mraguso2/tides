@@ -15,6 +15,7 @@ const Tides = ({ date, tides }) => {
   return (
     <div className="border-2 border-orange-600 p-3 relative">
       <div className="">
+        {/* {console.log(dateTides)} */}
         {dateTides
           ? dateTides.map((tide, i) => (
               <p key={i} className="tideText text-blue-700 text-sm">
