@@ -13,7 +13,7 @@ const Tides = ({ date, tides }) => {
   }, [tides, date]);
 
   return (
-    <div className="border-2 border-orange-600 p-3 relative">
+    <div className="p-3 relative">
       <div className="">
         {/* {console.log(dateTides)} */}
         {dateTides

@@ -40,7 +40,7 @@ const DateChangeWrapper = () => {
   }, [datetime]);
 
   return (
-    <main className="border-2 border-green-600">
+    <main className="">
       <Dashboard date={date} tides={tides} />
       <Upcoming futureDays={futureDays} tides={tides} />
       <Month month={currentMonth} />

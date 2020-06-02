@@ -1,7 +1,7 @@
 import Tides from './Tides';
 
 const Day = ({ day, tides }) => (
-  <div className="border-2 border-orange-600 p-3 relative">
+  <div className="p-3 relative">
     <div className="flex flex-col">
       <h3 className="headingText text-blue-700 text-md">
         {day.dayOfWeek}, {day.date}

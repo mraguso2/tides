@@ -54,10 +54,10 @@ const Month = ({ month }) => {
   }, [selectedMonth]);
 
   return (
-    <div className="border-2 border-orange-600 p-3 relative">
+    <div className="month p-3 relative">
       <div className="flex">
         <h3 className="headingText w-full text-center text-blue-700 text-md">
-          {month ? format(new Date(month.slice(3), month.slice(0, 2), 1), 'MMM-yyyy') : ''}
+          {month ? format(new Date(month.slice(3), month.slice(0, 2) - 1, 1), 'MMM-yyyy') : ''}
         </h3>
       </div>
       <div className="flex">
@@ -75,7 +75,7 @@ const Month = ({ month }) => {
               <div
                 key={i}
                 data-day={dayz.currentDay}
-                className={`cursor-pointer monthDay bg-white border border-solid border-gray-200 ${
+                className={`cursor-pointer monthDay bg-white text-center ${
                   dayz.hideMe ? 'hideMe' : ''
                 }`}
               >
@@ -98,11 +98,16 @@ const Month = ({ month }) => {
         .hideMe {
           opacity: 0;
         }
+        .month {
+          background: #fff6d2;
+        }
         .headingText {
           font-family: 'Open Sans', sans-serif;
         }
         .monthDay {
           width: calc(100% / 7);
+          border: 2px solid black;
+          border-color: #fff6d2;
         }
         @media only screen and (max-width: 485px) {
           .shrinkIt > h1 {

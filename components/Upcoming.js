@@ -1,8 +1,8 @@
 import Day from './Day';
 
 const Upcoming = ({ futureDays, tides }) => (
-  <div className="border-2 border-orange-600 relative">
-    <div className="flex justify-between">
+  <div className="upcoming relative">
+    <div className="flex flex-col justify-between">
       {futureDays
         // .sort((a, b) => a.dt < b.dt)
         .map((day, i) => (
@@ -13,6 +13,9 @@ const Upcoming = ({ futureDays, tides }) => (
     <style jsx>{`
       .headingText {
         font-family: 'Open Sans', sans-serif;
+      }
+      .upcoming {
+        background: aliceblue;
       }
       @media only screen and (max-width: 485px) {
         .shrinkIt > h1 {
