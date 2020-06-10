@@ -12,7 +12,7 @@ export default function Home() {
       </Head>
       <Header />
       <DateChangeContainer />
-      <footer>
+      <footer className="bg-white">
         <p>Powered by Ocean Vibes 🏖</p>
       </footer>
 
@@ -36,10 +36,11 @@ export default function Home() {
         footer {
           width: 100%;
           height: 65px;
-          border-top: 1px solid #eaeaea;
+          // border-top: 1px solid #eaeaea;
           display: flex;
           justify-content: center;
           align-items: center;
+          border-top: 5px solid #83bfe9;
         }
 
         footer p {

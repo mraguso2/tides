@@ -41,7 +41,7 @@ const DateChangeWrapper = () => {
 
   return (
     <main className="">
-      <Dashboard date={date} tides={tides} />
+      <Dashboard date={date} datetime={datetime} tides={tides} />
       <Upcoming futureDays={futureDays} tides={tides} />
       <Month month={currentMonth} />
       <style jsx>{`
@@ -50,6 +50,7 @@ const DateChangeWrapper = () => {
           flex: 1;
           display: flex;
           flex-direction: column;
+          border-bottom: 5px solid #406991;
         }
       `}</style>
     </main>
