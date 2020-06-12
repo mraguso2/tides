@@ -13,20 +13,36 @@ const Tides = ({ date, size = 'sm', padding = '3', tides }) => {
   }, [tides, date]);
 
   return (
-    <div className={`p-${padding} relative`}>
-      <div className="">
+    <div className={`p-${padding} relative bg-white tideContainer`}>
+      <div className="w-32">
         {/* {console.log(dateTides)} */}
         {dateTides
           ? dateTides.map((tide, i) => (
-              <p key={i} className={`tideText text-blue-700 text-${size}`}>
+              <p
+                key={i}
+                className={`flex justify-between tideText text-blue-700 text-${size} ${tide.type.toLowerCase()}`}
+              >
                 {tide.type}: <span className="">{tide.tideTime}</span>
               </p>
             ))
           : ''}
       </div>
       <style jsx>{`
+        .tideContainer {
+          // box-shadow: 0px 5px 20px rgba(103, 151, 203, 0.2);
+          border-radius: 5px;
+        }
         .tideText {
           font-family: 'Open Sans', sans-serif;
+          padding: 0 5px;
+        }
+        .tideText.high {
+          background: #d1fff0;
+          background: #e2e8f0;
+          background: #d7e7fd;
+        }
+        .tideText.low {
+          background: #ffffff;
         }
       `}</style>
     </div>

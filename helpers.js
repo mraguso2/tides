@@ -87,7 +87,7 @@ export function findDayTides(date, tides) {
       return tideDate === date;
     })
     .sort((a, b) => new Date(a.eventTime) - new Date(b.eventTime));
-  // console.log(getDayTides);
+
   const finalDayTides = getDayTides.map(tides => {
     const { eventTime } = tides;
     const tideTime = format(new Date(eventTime), 'h:mm aaaa');
