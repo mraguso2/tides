@@ -3,10 +3,10 @@ import Tides from './Tides';
 const Day = ({ day, tides }) => (
   <div className="p-3 relative">
     <div className="flex flex-col">
-      <h3 className="headingText text-blue-700 text-md">
+      <h3 className="headingText text-blue-700 text-md pb-3">
         {day.dayOfWeek}, {day.date}
       </h3>
-      <Tides date={day.date} tides={tides} />
+      <Tides date={day.date} size="base" tides={tides} />
     </div>
 
     <style jsx>{`

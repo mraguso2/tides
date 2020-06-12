@@ -50,7 +50,7 @@ const Dashboard = ({ date, datetime, tides }) => {
   return (
     <div className="dash relative">
       <div className="flex flex-col">
-        <div className="flex justify-between pt-3 pb-4">
+        <div className="flex justify-between pb-6">
           <div>
             <h1 className="headingText text-gray-700 text-lg tracking-wide leading-7">
               {dateForms.dayOfWeek}, {date} <br />
@@ -72,28 +72,27 @@ const Dashboard = ({ date, datetime, tides }) => {
           </div>
           <p className="pill text-sm">Today</p>
         </div>
-        <div className="flex justify-between items-center">
-          <div className="flex flex-col justify-between items-center text-center p-1 relative w-40">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              className="w-12 icon-arrow absolute top-0 right-0"
-            >
-              <circle cx="12" cy="12" r="10" className="primaryArrow" />
-              <path
-                className={`secondaryArrow ${tideStatus === 'Rising' ? '' : 'hideMe'}`}
-                d="M13 9.41V17a1 1 0 0 1-2 0V9.41l-2.3 2.3a1 1 0 1 1-1.4-1.42l4-4a1 1 0 0 1 1.4 0l4 4a1 1 0 0 1-1.4 1.42L13 9.4z"
-              />
-              <path
-                className={`secondaryArrow ${tideStatus === 'Falling' ? '' : 'hideMe'}`}
-                d="M11 14.59V7a1 1 0 0 1 2 0v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.42l2.3 2.3z"
-              />
-            </svg>
-            <p className="tideStatusText mr-12">
-              Tides are currently <br />
-              <span className="bg-white status mt-1 inline-block">{tideStatus}</span>
-            </p>
-          </div>
+        <div className="flex justify-between items-center relative">
+          <p className="flex flex-col tideStatusText text-center">
+            Tides Are: <br />
+            <span className="bg-white status mt-1 inline-block">{tideStatus}</span>
+          </p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            className="w-12 icon-arrow relative top-0"
+          >
+            <circle cx="12" cy="12" r="10" className="primaryArrow" />
+            <path
+              className={`secondaryArrow ${tideStatus === 'Rising' ? '' : 'hideMe'}`}
+              d="M13 9.41V17a1 1 0 0 1-2 0V9.41l-2.3 2.3a1 1 0 1 1-1.4-1.42l4-4a1 1 0 0 1 1.4 0l4 4a1 1 0 0 1-1.4 1.42L13 9.4z"
+            />
+            <path
+              className={`secondaryArrow ${tideStatus === 'Falling' ? '' : 'hideMe'}`}
+              d="M11 14.59V7a1 1 0 0 1 2 0v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.42l2.3 2.3z"
+            />
+          </svg>
+
           <Tides date={date} size="base" padding="1" tides={tides} />
         </div>
       </div>
@@ -104,13 +103,14 @@ const Dashboard = ({ date, datetime, tides }) => {
         }
         .tideStatusText {
           color: #406991;
-          width: 100px;
+          width: 90px;
         }
         .status {
           padding: 3px 10px;
           border-radius: 5px;
           box-shadow: inset 0px 0px 5px rgba(34, 49, 64, 0.19);
           color: #057173;
+          color: #421987;
         }
         .hideMe {
           opacity: 0;
@@ -119,7 +119,7 @@ const Dashboard = ({ date, datetime, tides }) => {
           padding: 0.1rem 0.15rem;
           background: #acffe3;
           width: 70px;
-          height: 27px;
+          height: 25px;
           // height: 35px;
           display: flex;
           justify-content: center;
@@ -128,7 +128,7 @@ const Dashboard = ({ date, datetime, tides }) => {
           color: #00814f;
           letter-spacing: 0.5px;
           position: relative;
-          top: -15px;
+          // top: -15px;
         }
         // p.pill {
         //   animation-duration: 1.25s;
@@ -147,27 +147,33 @@ const Dashboard = ({ date, datetime, tides }) => {
           }
         }
         .icon-arrow {
-          top: 5px;
+          top: -10px;
         }
         svg.icon-arrow {
           animation-duration: 1.65s;
           animation-name: slide;
           animation-iteration-count: infinite;
           animation-direction: alternate;
+          animation-timing-function: linear;
         }
         @keyframes slide {
-          from {
+          0% {
+            top: -10px;
+          }
+          50% {
             top: 10px;
           }
-          to {
-            top: 25px;
+          100% {
+            top: -10px;
           }
         }
         .primaryArrow {
           fill: #abfdff;
+          // fill: #acffe3;
         }
         .secondaryArrow {
           fill: #057173;
+          // fill: #00814f;
         }
         .icon-time {
           width: 20px;
@@ -183,7 +189,7 @@ const Dashboard = ({ date, datetime, tides }) => {
           font-family: 'Open Sans', sans-serif;
         }
         .dash {
-          padding: 0.75rem;
+          padding: 1rem;
           margin: auto auto 3rem auto;
           min-width: 335px;
           border-radius: 5px;

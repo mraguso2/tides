@@ -54,7 +54,7 @@ const Month = ({ month }) => {
   }, [selectedMonth]);
 
   return (
-    <div className="month p-3 relative">
+    <div className="month p-3 relative m-auto">
       <div className="flex">
         <h3 className="headingText w-full text-center text-blue-700 text-md">
           {month ? format(new Date(month.slice(3), month.slice(0, 2) - 1, 1), 'MMM-yyyy') : ''}
@@ -85,14 +85,16 @@ const Month = ({ month }) => {
             ))
           : ''}
       </div>
-      {daySelected ? <Day day={daySelected} tides={tides} /> : ''}
-      {daySelected ? (
-        <button onClick={() => setDaySelected('')} type="button">
-          Clear Date
-        </button>
-      ) : (
-        ''
-      )}
+      <div>
+        {daySelected ? <Day day={daySelected} tides={tides} /> : ''}
+        {daySelected ? (
+          <button onClick={() => setDaySelected('')} type="button">
+            Clear Date
+          </button>
+        ) : (
+          ''
+        )}
+      </div>
 
       <style jsx>{`
         .hideMe {
@@ -100,6 +102,8 @@ const Month = ({ month }) => {
         }
         .month {
           background: #fff6d2;
+          max-width: 275px;
+          border-radius: 5px;
         }
         .headingText {
           font-family: 'Open Sans', sans-serif;
@@ -108,6 +112,7 @@ const Month = ({ month }) => {
           width: calc(100% / 7);
           border: 2px solid black;
           border-color: #fff6d2;
+          border-radius: 5px;
         }
         @media only screen and (max-width: 485px) {
           .shrinkIt > h1 {
