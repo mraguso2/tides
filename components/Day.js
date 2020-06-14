@@ -1,9 +1,9 @@
 import Tides from './Tides';
 
-const Day = ({ day, tides }) => (
+const Day = ({ day, color = '', tides }) => (
   <div className="p-3 relative">
-    <div className="flex flex-col">
-      <h3 className="headingText text-blue-700 text-md pb-3">
+    <div className="flex flex-col items-center">
+      <h3 className="headingText text-blue-700 text-md pb-3" style={{ color: `${color}` }}>
         {day.dayOfWeek}, {day.date}
       </h3>
       <Tides date={day.date} size="base" tides={tides} />

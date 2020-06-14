@@ -43,7 +43,7 @@ const DateChangeWrapper = () => {
     <main className="">
       <Dashboard date={date} datetime={datetime} tides={tides} />
       <Upcoming futureDays={futureDays} tides={tides} />
-      <Month month={currentMonth} />
+      <Month month={currentMonth} date={date} />
       <style jsx>{`
         main {
           padding: 2rem 0;
