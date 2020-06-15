@@ -66,6 +66,10 @@ const Header = () => (
         .theNeck {
           background-position: center;
         }
+      @media only screen and (min-width: 1024px) {
+        .theNeck {
+          height: 300px;
+        }
       }
     `}</style>
   </div>
