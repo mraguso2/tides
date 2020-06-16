@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { endOfMonth, format } from 'date-fns';
+import { endOfMonth, format, add } from 'date-fns';
 import Tides from './Tides';
 import Day from './Day';
 import { getTidesMonth, buildDay } from '../helpers';
 
 const Month = ({ month, date }) => {
   const [selectedMonth, setSelectedMonth] = useState(month);
+  const [currentMonth, setCurrentMonth] = useState(month);
   const [tides, setTides] = useState('');
   const [monthDays, setMonthDays] = useState('');
   const [daySelected, setDaySelected] = useState('');
@@ -13,19 +14,19 @@ const Month = ({ month, date }) => {
   function handleDayClick(e) {
     const { day } = e.target.dataset;
     if (day === '00') return;
-    const currentYear = month.slice(3);
-    const currentMonth = month.slice(0, 2);
+    const theYear = selectedMonth.slice(3);
+    const theMonth = selectedMonth.slice(0, 2);
 
-    const dayDets = buildDay(new Date(currentYear, currentMonth - 1, day));
+    const dayDets = buildDay(new Date(theYear, theMonth - 1, day));
     return setDaySelected({ ...dayDets, day });
   }
 
   function buildMonth(month) {
-    if (!month) return;
-    const currentYear = month.slice(3);
-    const currentMonth = month.slice(0, 2);
-    const startingPosition = new Date(currentYear, currentMonth - 1, 1).getDay();
-    const lastDay = endOfMonth(new Date(currentYear, currentMonth - 1, 1)).getDate();
+    if (!selectedMonth) return;
+    const theYear = selectedMonth.slice(3);
+    const theMonth = selectedMonth.slice(0, 2);
+    const startingPosition = new Date(theYear, theMonth - 1, 1).getDay();
+    const lastDay = endOfMonth(new Date(theYear, theMonth - 1, 1)).getDate();
 
     const blanks = [0, 1, 2, 3, 4, 5, 6]
       .filter(val => val < startingPosition)
@@ -36,15 +37,23 @@ const Month = ({ month, date }) => {
     const daysInMonth = [];
     for (let i = 1; i <= lastDay; i++) {
       const currentDay = `000000000${i}`.substr(-2);
-      const nextDay = `${currentMonth}-${currentDay}-${currentYear}`;
+      const nextDay = `${theMonth}-${currentDay}-${theYear}`;
       daysInMonth.push({ nextDay, currentDay });
     }
     return [...blanks, ...daysInMonth];
   }
 
+  const handleMonthChange = direction => {
+    if (currentMonth === selectedMonth && direction === -1) return;
+    const [mm, yyyy] = selectedMonth.split('-');
+    const calcMonth = add(new Date(yyyy, Number(mm) - 1, 1), { months: direction });
+    const newMonth = format(Date.parse(calcMonth), 'MM-yyyy');
+    return setSelectedMonth(newMonth);
+  };
+
   useEffect(() => {
     async function tidesMonth() {
-      const apiMonth = `${month.slice(3)}-${month.slice(0, 2)}`;
+      const apiMonth = `${selectedMonth.slice(3)}-${selectedMonth.slice(0, 2)}`;
       const tideDets = await getTidesMonth(apiMonth);
       const daysInTheMonth = buildMonth(selectedMonth);
       setTides(tideDets);
@@ -58,9 +67,41 @@ const Month = ({ month, date }) => {
       <h3 className="headingText text-lg text-center mb-1">Pick a Date</h3>
       <div className="month p-3 relative m-auto">
         <div className="flex">
-          <h3 className="monthText w-full text-center text-blue-700 text-md">
-            {month ? format(new Date(month.slice(3), month.slice(0, 2) - 1, 1), 'MMM-yyyy') : ''}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            className={`w-10 mr-2 ml-2 icon-cheveron-left-circle ${
+              currentMonth === selectedMonth ? 'hideMe' : ''
+            }`}
+            onClick={() => handleMonthChange(-1)}
+          >
+            <circle cx="12" cy="12" r="10" className="primary" style={{ fill: '#e1c99b' }} />
+            <path
+              className="secondary"
+              d="M13.7 15.3a1 1 0 0 1-1.4 1.4l-4-4a1 1 0 0 1 0-1.4l4-4a1 1 0 0 1 1.4 1.4L10.42 12l3.3 3.3z"
+            />
+          </svg>
+          <h3 className="monthText w-full text-center text-blue-700 text-lg">
+            {selectedMonth
+              ? format(
+                  new Date(selectedMonth.slice(3), selectedMonth.slice(0, 2) - 1, 1),
+                  'MMM-yyyy'
+                )
+              : ''}
           </h3>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            className="w-10 mr-2 ml-2 icon-cheveron-right-circle"
+            onClick={() => handleMonthChange(1)}
+          >
+            <circle cx="12" cy="12" r="10" className="" style={{ fill: '#e1c99b' }} />
+            <path
+              className="secondary"
+              // style={{ fill: 'transparent' }}
+              d="M10.3 8.7a1 1 0 0 1 1.4-1.4l4 4a1 1 0 0 1 0 1.4l-4 4a1 1 0 0 1-1.4-1.4l3.29-3.3-3.3-3.3z"
+            />
+          </svg>
         </div>
         <div className="flex">
           <p className="monthDay text-center text-gray-700 text-sm">Sun</p>
@@ -77,11 +118,17 @@ const Month = ({ month, date }) => {
                 <div
                   key={i}
                   data-day={dayz.currentDay}
-                  data-today={!!(date && dayz.currentDay === date.slice(-7, -5))}
+                  data-today={
+                    !!(
+                      date &&
+                      currentMonth === selectedMonth &&
+                      dayz.currentDay === date.slice(-7, -5)
+                    )
+                  }
                   className={`cursor-pointer monthDay bg-white text-center ${
                     dayz.hideMe ? 'hideMe' : ''
                   } ${daySelected.day && daySelected.day === dayz.currentDay ? 'selected' : ''}
-                  ${dayz.currentDay === new Date().getDate() ? 'today' : ''}`}
+                  `}
                 >
                   {Number(dayz.currentDay)}
                   {/* <Tides className="" day={dayz.date} tides={tides} /> */}
@@ -90,37 +137,6 @@ const Month = ({ month, date }) => {
             : ''}
         </div>
         <div>
-          {/* {daySelected ? (
-            <div className="row green2">
-              <div>
-                <svg
-                  id=""
-                  preserveAspectRatio="xMidYMax meet"
-                  className="svg-separator sep4 relative"
-                  viewBox="0 0 1600 200"
-                  style={{ display: 'block' }}
-                >
-                  <polygon
-                    className=""
-                    style={{ fill: 'rgb(27, 188, 155)' }}
-                    points="886,86 800,172 714,86 -4,86 -4,204 1604,204 1604,86 "
-                  />
-                  <polygon
-                    className=""
-                    style={{ opacity: 1, fill: '#0e9382' }}
-                    points="800,172 886,86 900,86 800,186 700,86 714,86 "
-                  />
-                  <polygon
-                    className=""
-                    style={{ opacity: 1, fill: '#14a084' }}
-                    points="800,162 876,86 888,86 800,174 712,86 724,86 "
-                  />
-                </svg>
-              </div>
-            </div>
-          ) : (
-            ''
-          )} */}
           {daySelected ? (
             <div className="singleDay mt-5">
               <Day day={daySelected} color="#057173" tides={tides} />

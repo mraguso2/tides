@@ -7,7 +7,8 @@ export default function Home() {
     <div className="container">
       <Head>
         <title>Eatons Neck Tides</title>
-        <link rel="icon" href="/favicon.ico" />
+        {/* <link rel="icon" href="/favicon.ico" /> */}
+        <link rel="icon" href="/favtide.jpg" />
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
       </Head>
       <Header />
