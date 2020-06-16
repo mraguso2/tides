@@ -48,6 +48,7 @@ const Month = ({ month, date }) => {
     const [mm, yyyy] = selectedMonth.split('-');
     const calcMonth = add(new Date(yyyy, Number(mm) - 1, 1), { months: direction });
     const newMonth = format(Date.parse(calcMonth), 'MM-yyyy');
+    setDaySelected('');
     return setSelectedMonth(newMonth);
   };
 
