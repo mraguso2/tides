@@ -9,6 +9,10 @@ export default function Home() {
         <title>Eatons Neck Tides</title>
         {/* <link rel="icon" href="/favicon.ico" /> */}
         <link rel="icon" href="/favtide.jpg" />
+        <meta
+          name="description"
+          content="A quick and easy way to find out the ocean high and low tide times in Eatons Neck/Northport, NY"
+        />
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
       </Head>
       <Header />

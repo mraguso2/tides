@@ -70,7 +70,7 @@ const Month = ({ month, date }) => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            className={`w-10 mr-2 ml-2 icon-cheveron-left-circle ${
+            className={`w-10 mr-2 ml-2 h-full icon-cheveron-left-circle ${
               currentMonth === selectedMonth ? 'hideMe' : ''
             }`}
             onClick={() => handleMonthChange(-1)}
@@ -92,7 +92,7 @@ const Month = ({ month, date }) => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            className="w-10 mr-2 ml-2 icon-cheveron-right-circle"
+            className="w-10 mr-2 ml-2 h-full icon-cheveron-right-circle"
             onClick={() => handleMonthChange(1)}
           >
             <circle cx="12" cy="12" r="10" className="" style={{ fill: '#e1c99b' }} />
