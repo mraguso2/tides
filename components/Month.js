@@ -147,7 +147,7 @@ const Month = ({ month, date }) => {
                 onClick={() => setDaySelected('')}
                 type="button"
               >
-                Clear Date Selected
+                Close Date
               </button>
             </div>
           ) : (
