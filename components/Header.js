@@ -70,6 +70,10 @@ const Header = () => (
         .theNeck {
           height: 300px;
         }
+        .headingText {
+          font-size: 2.5rem;
+          padding: 15px;
+        }
       }
     `}</style>
   </div>

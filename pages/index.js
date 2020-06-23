@@ -7,8 +7,11 @@ export default function Home() {
     <div className="container">
       <Head>
         <title>Eatons Neck Tides</title>
-        {/* <link rel="icon" href="/favicon.ico" /> */}
         <link rel="icon" href="/favtide.jpg" />
+        <meta
+          name="google-site-verification"
+          content="r7bHHtJqAE4XUTYRbvHcW6STIA9wBaCu6y4IpORTL1Y"
+        />
         <meta
           name="description"
           content="A quick and easy way to find out the ocean high and low tide times in Eatons Neck/Northport, NY"

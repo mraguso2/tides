@@ -147,7 +147,7 @@ const Month = ({ month, date }) => {
                 onClick={() => setDaySelected('')}
                 type="button"
               >
-                Clear Date
+                Clear Date Selected
               </button>
             </div>
           ) : (
@@ -205,6 +205,11 @@ const Month = ({ month, date }) => {
           .shrinkIt > h1 {
             font-size: 1.25rem;
             margin-left: 0.5rem;
+          }
+        }
+        @media only screen and (min-width: 1024px) {
+          .month {
+            max-width: 425px;
           }
         }
       `}</style>
