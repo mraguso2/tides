@@ -68,7 +68,7 @@ const Header = () => (
         }
       @media only screen and (min-width: 1024px) {
         .theNeck {
-          height: 300px;
+          height: 375px;
         }
         .headingText {
           font-size: 2.5rem;
