@@ -42,6 +42,7 @@ const Tides = ({ date, size = 'sm', padding = '3', tides }) => {
           background: #e2e8f0;
           background: #d7e7fd;
           background: #fffde6;
+          background: linear-gradient(-45deg, #d2feff, #fffde1);
         }
         .tideText.low {
           background: #ffffff;

@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import Tides from './Tides';
+import NextTideUp from './NextTideUp';
 
 const Dashboard = ({ date, datetime, tides }) => {
   const [dateForms, setDateForms] = useState('');
   const [theTime, setTime] = useState(format(datetime, 'h:mm'));
   const [tideStatus, setTideStatus] = useState(' ');
+  const [nextTide, setNextTide] = useState(' ');
 
   useEffect(() => {
     const dayOfWeek = format(datetime, 'EEEE');
@@ -37,7 +39,6 @@ const Dashboard = ({ date, datetime, tides }) => {
       .sort((a, b) => a.tideDt - b.tideDt);
 
     const nowIndex = sortedTidesWithNow.findIndex(t => t.now);
-
     let status;
     if (nowIndex === 0) {
       status = sortedTidesWithNow[1].type === 'Low' ? 'Falling' : 'Rising';
@@ -45,12 +46,15 @@ const Dashboard = ({ date, datetime, tides }) => {
       status = sortedTidesWithNow[nowIndex - 1].type === 'Low' ? 'Rising' : 'Falling';
     }
     setTideStatus(status);
+
+    const theNextTide = sortedTidesWithNow[nowIndex + 1];
+    setNextTide(theNextTide);
   }, [datetime]);
 
   return (
     <div className="dash relative">
       <div className="flex flex-col">
-        <div className="flex justify-between pb-6">
+        <div className="flex justify-between pb-4">
           <div>
             <h1 className="headingText text-gray-700 text-lg tracking-wide leading-7">
               {dateForms.dayOfWeek}, {date} <br />
@@ -72,6 +76,9 @@ const Dashboard = ({ date, datetime, tides }) => {
           </div>
           <p className="pill text-sm">Today</p>
         </div>
+
+        {nextTide !== '' ? <NextTideUp nextTide={nextTide} date={dateForms.date} /> : ''}
+
         <div className="flex justify-between items-center relative">
           <p className="flex flex-col tideStatusText text-center">
             Tides Are: <br />
