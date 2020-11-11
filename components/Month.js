@@ -53,9 +53,9 @@ const Month = ({ month, date }) => {
   };
 
   useEffect(() => {
-    async function tidesMonth() {
+    function tidesMonth() {
       const apiMonth = `${selectedMonth.slice(3)}-${selectedMonth.slice(0, 2)}`;
-      const tideDets = await getTidesMonth(apiMonth);
+      const tideDets = getTidesMonth(apiMonth);
       const daysInTheMonth = buildMonth(selectedMonth);
       setTides(tideDets);
       setMonthDays(daysInTheMonth);
