@@ -6,7 +6,7 @@ import data2022 from '../../Data/2022data.json';
 /*  ================================
     Need to run *LOCALLY IN NY* :) only when to format the data
     Data Source: https://tidesandcurrents.noaa.gov/noaatideannual.html?id=8515786
-        TimeZone: GMT
+        TimeZone: LST/LDT
         Datum: MSL
         24 hour Clock
         Format: XML
@@ -63,6 +63,7 @@ const getDemTides = (req, res) => {
   const d2020 = formatData(data2020);
   const d2021 = formatData(data2021);
   const d2022 = formatData(data2022);
+  res.json({ data: { ...d2020, ...d2021, ...d2022 } });
   res.json({ data: { ...d2020, ...d2021, ...d2022 } });
 };
 
