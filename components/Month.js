@@ -13,7 +13,8 @@ const Month = ({ month, date }) => {
 
   function handleDayClick(e) {
     const { day } = e.target.dataset;
-    if (day === '00') return;
+    console.log(day);
+    if (day === '00' || !day) return;
     const theYear = selectedMonth.slice(3);
     const theMonth = selectedMonth.slice(0, 2);
 

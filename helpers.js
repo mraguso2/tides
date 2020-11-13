@@ -3,9 +3,10 @@ import allTideData from './Data/tidesDataCombined.json';
 
 export function getMonthOfTides(month) {
   const tideInfo = allTideData.data[`mm_${month}`];
-  // const now = new Date();
-  localStorage.setItem(month, JSON.stringify(tideInfo));
-  return tideInfo;
+  const expiry = Date.now() + 864000000;
+  const tidesWithExpiry = [...tideInfo, { expiry }];
+  localStorage.setItem(month, JSON.stringify(tidesWithExpiry));
+  return tidesWithExpiry;
 }
 
 export function buildDay(datetime = Date.now(), offset = 0) {
@@ -33,8 +34,15 @@ function tidesForTheMonth(monthValue) {
     monthTides = getMonthOfTides(monthValue);
   } else {
     monthTides = JSON.parse(window.localStorage.getItem(monthValue));
+
+    // check if month is stale
+    const [{ expiry = Date.now() }] = monthTides.filter(item => item.expiry);
+    if (Date.now() > expiry) {
+      monthTides = getMonthOfTides(monthValue);
+    }
   }
-  return monthTides;
+  const tidesWithOutExpiry = monthTides.filter(item => !item.expiry);
+  return tidesWithOutExpiry;
 }
 
 function comboTides(curr = {}, next = {}) {
