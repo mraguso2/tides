@@ -1,7 +1,9 @@
 import { format } from 'date-fns';
-import data2020 from '../../Data/2020data.json';
-import data2021 from '../../Data/2021data.json';
-import data2022 from '../../Data/2022data.json';
+// import data2020 from '../../Data/2020data.json';
+// import data2021 from '../../Data/2021data.json';
+// import data2022 from '../../Data/2022data.json';
+import data2023 from '../../Data/2023data.json';
+import data2024 from '../../Data/2024data.json';
 
 /*  ================================
     Need to run *LOCALLY IN NY* :) only when to format the data
@@ -57,14 +59,17 @@ function formatData(dataYear) {
       2020:   Yes   11/11/2020
       2021:   Yes   11/11/2020
       2022:   Yes   11/11/2020
+      2023:   Yes   03/09/2023
     ================================ */
 
 const getDemTides = (req, res) => {
-  const d2020 = formatData(data2020);
-  const d2021 = formatData(data2021);
-  const d2022 = formatData(data2022);
-  res.json({ data: { ...d2020, ...d2021, ...d2022 } });
-  res.json({ data: { ...d2020, ...d2021, ...d2022 } });
+  // const d2020 = formatData(data2020);
+  // const d2021 = formatData(data2021);
+  // const d2022 = formatData(data2022);
+  const d2023 = formatData(data2023);
+  const d2024 = formatData(data2024);
+  res.json({ data: { ...d2023, ...d2024 } });
+  res.json({ data: { ...d2023, ...d2024 } });
 };
 
 export default getDemTides;

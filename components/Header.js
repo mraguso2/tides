@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const Header = () => (
   <div className="theNeck pt-5 relative">
-    <Link href="/">
+    <Link legacyBehavior href="/">
       <a className="relative">
         <div className="flex shrinkIt">
           <h1 className="headingText text-blue-700 ml-2 text-2xl tracking-wide leading-7">
