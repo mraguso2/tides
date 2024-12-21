@@ -1,9 +1,7 @@
 import { format } from 'date-fns';
-// import data2020 from '../../Data/2020data.json';
-// import data2021 from '../../Data/2021data.json';
-// import data2022 from '../../Data/2022data.json';
-import data2023 from '../../Data/2023data.json';
 import data2024 from '../../Data/2024data.json';
+import data2025 from '../../Data/2025data.json';
+import data2026 from '../../Data/2026data.json';
 
 /*  ================================
     Need to run *LOCALLY IN NY* :) only when to format the data
@@ -15,6 +13,11 @@ import data2024 from '../../Data/2024data.json';
 
     START
     ================================
+*/
+
+/*
+  Potential to automate using this link:
+  https://tidesandcurrents.noaa.gov/cgi-bin/predictiondownload.cgi?&stnid=8515786&threshold=&thresholdDirection=greaterThan&bdate=2026&timezone=LST/LDT&datum=MSL&clock=24hour&type=xml&annual=true
 */
 
 function setDateSt(dateInitial, timeInitial) {
@@ -63,13 +66,10 @@ function formatData(dataYear) {
     ================================ */
 
 const getDemTides = (req, res) => {
-  // const d2020 = formatData(data2020);
-  // const d2021 = formatData(data2021);
-  // const d2022 = formatData(data2022);
-  const d2023 = formatData(data2023);
   const d2024 = formatData(data2024);
-  res.json({ data: { ...d2023, ...d2024 } });
-  res.json({ data: { ...d2023, ...d2024 } });
+  const d2025 = formatData(data2025);
+  const d2026 = formatData(data2026);
+  res.json({ data: { ...d2024, ...d2025, ...d2026 } });
 };
 
 export default getDemTides;
