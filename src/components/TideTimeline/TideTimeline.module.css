@@ -1,0 +1,71 @@
+/* Text sizes in this file are SVG viewBox units, not screen pixels */
+
+.svg {
+	width: 100%;
+	overflow: visible;
+}
+
+.axis {
+	stroke: var(--color-border);
+}
+
+.axisHigh,
+.axisLow {
+	font-size: 9px;
+	font-weight: 600;
+	letter-spacing: var(--tracking-wider);
+}
+
+.axisHigh {
+	fill: var(--color-tide-high);
+	opacity: 0.45;
+}
+
+.axisLow {
+	fill: var(--color-tide-low);
+	opacity: 0.65;
+}
+
+.wave {
+	fill: none;
+	stroke: var(--color-tide-high);
+	stroke-width: 2;
+	stroke-linecap: round;
+	opacity: 0.7;
+}
+
+.tidePoint circle {
+	fill: var(--color-tide-high);
+}
+
+.tidePoint text {
+	font-size: 10px;
+	font-weight: 600;
+	fill: var(--color-tide-high);
+}
+
+.tidePoint[data-type="L"] circle,
+.tidePoint[data-type="L"] text {
+	fill: var(--color-tide-low);
+}
+
+.now line {
+	stroke: var(--color-now);
+	stroke-width: 1.5;
+	stroke-dasharray: 3 3;
+}
+
+.now circle,
+.now rect {
+	fill: var(--color-now);
+}
+
+.now .nowDot {
+	fill: var(--color-surface);
+}
+
+.now text {
+	font-size: 9px;
+	font-weight: 700;
+	fill: var(--color-surface);
+}

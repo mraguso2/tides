@@ -1,0 +1,40 @@
+.footer {
+	background: var(--color-chrome);
+	padding: var(--space-5) var(--space-5) var(--space-8);
+	text-align: center;
+	margin-block-start: var(--space-2);
+}
+
+.wordmark {
+	color: var(--color-on-chrome);
+	font-size: var(--text-base);
+	font-weight: 600;
+	font-family: var(--font-display);
+	margin-block-end: var(--space-1);
+}
+
+.locations {
+	font-size: var(--text-xs);
+	color: rgb(255 255 255 / 0.5);
+	letter-spacing: var(--tracking-wider);
+	margin-block-end: var(--space-3);
+}
+
+.divider {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	margin-block-end: var(--space-2);
+}
+
+.dividerLine {
+	block-size: 1px;
+	inline-size: 40px;
+	background: rgb(255 255 255 / 0.15);
+}
+
+.note {
+	font-size: var(--text-2xs);
+	color: rgb(255 255 255 / 0.35);
+}

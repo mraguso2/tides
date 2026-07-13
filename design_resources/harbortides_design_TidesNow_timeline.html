@@ -1,0 +1,173 @@
+
+<style>
+  .ht-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 16px; padding: 20px 20px 16px; font-family: var(--font-sans); max-width: 520px; margin: 0 auto; }
+  .ht-loc { font-size: 11px; color: var(--color-text-tertiary); letter-spacing: 2px; margin: 0 0 4px; }
+  .ht-time { font-size: 36px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; line-height: 1; }
+  .ht-date { font-size: 12px; color: var(--color-text-secondary); margin: 0 0 20px; }
+  .ht-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .ht-controls button { font-size: 11px; padding: 4px 10px; border-radius: 20px; border: 0.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); cursor: pointer; }
+  .ht-controls button.active { background: #1D6FA8; color: #fff; border-color: #1D6FA8; }
+  .tide-label { font-size: 11px; font-weight: 500; }
+  .tide-time-txt { font-size: 12px; }
+  .tide-delta { font-size: 11px; }
+</style>
+<div class="ht-card">
+  <p class="ht-loc">NORTHPORT · HUNTINGTON · CENTERPORT</p>
+  <div class="ht-time" id="nowDisplay">7:42 AM</div>
+  <div class="ht-date" id="dateDisplay">Monday, April 6</div>
+  <div class="ht-controls" id="scenarioControls">
+    <button class="active" onclick="setScenario('mid')">Mid-window</button>
+    <button onclick="setScenario('near')">Near tide</button>
+    <button onclick="setScenario('very-near')">Very close (&lt;1h)</button>
+  </div>
+  <svg id="tideSvg" width="100%" viewBox="0 0 480 160" style="overflow: visible; display: block;"></svg>
+  <div id="tideCards" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 12px;"></div>
+</div>
+<script>
+const SCENARIOS = {
+  mid: { nowMin: 462, tides: [{min:300,type:'low'},{min:600,type:'high'},{min:900,type:'low'}] },
+  near: { nowMin: 550, tides: [{min:300,type:'low'},{min:600,type:'high'},{min:900,type:'low'}] },
+  'very-near': { nowMin: 585, tides: [{min:300,type:'low'},{min:600,type:'high'},{min:900,type:'low'}] }
+};
+let current = SCENARIOS.mid;
+
+function minToLabel(m) {
+  const h24 = Math.floor(m/60), mn = m%60, ampm = h24 >= 12 ? 'PM' : 'AM';
+  const h = h24 % 12 || 12;
+  return `${h}:${mn.toString().padStart(2,'0')} ${ampm}`;
+}
+function deltaLabel(diff) {
+  const abs = Math.abs(diff), h = Math.floor(abs/60), m = abs%60;
+  if (h === 0) return `${m}m ${diff > 0 ? 'ago' : 'away'}`;
+  return m === 0 ? `${h}h ${diff > 0 ? 'ago' : 'away'}` : `${h}h ${m}m ${diff > 0 ? 'ago' : 'away'}`;
+}
+
+function setScenario(name) {
+  document.querySelectorAll('.ht-controls button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  current = SCENARIOS[name];
+  render();
+}
+
+function render() {
+  const { nowMin, tides } = current;
+  const now = nowMin;
+  document.getElementById('nowDisplay').textContent = minToLabel(now);
+
+  const nearThreshold = 120;
+  const showTides = tides.filter((t, i) => {
+    const diff = now - t.min;
+    if (diff > 0) return i === tides.map((x,j) => now > x.min ? j : -1).filter(x=>x>=0).slice(-1)[0];
+    if (diff <= 0) return i === tides.map((x,j) => now <= x.min ? j : -1).filter(x=>x>=0)[0];
+    return false;
+  });
+
+  const past = tides.filter(t => t.min < now).slice(-1)[0];
+  const future = tides.filter(t => t.min >= now)[0];
+
+  let visibleTides = [past, future].filter(Boolean);
+  const closeToFuture = future && (future.min - now) < nearThreshold;
+  const closeToPast = past && (now - past.min) < nearThreshold;
+  if ((closeToFuture || closeToPast) && tides.length >= 3) {
+    const extraFuture = tides.filter(t => t.min > future?.min)[0];
+    const extraPast = tides.filter(t => t.min < past?.min).slice(-1)[0];
+    if (closeToFuture && extraFuture) visibleTides = [past, future, extraFuture].filter(Boolean);
+    else if (closeToPast && extraPast) visibleTides = [extraPast, past, future].filter(Boolean);
+  }
+
+  const allMins = visibleTides.map(t => t.min);
+  const minT = Math.min(...allMins, now) - 45;
+  const maxT = Math.max(...allMins, now) + 45;
+  const span = maxT - minT;
+
+  const svgW = 480, svgH = 160;
+  const padL = 20, padR = 20, padT = 30, padB = 40;
+  const drawW = svgW - padL - padR;
+  const drawH = svgH - padT - padB;
+  const toX = m => padL + ((m - minT) / span) * drawW;
+  const waveY = (m, type) => {
+    const y = type === 'high' ? padT + 10 : padT + drawH - 10;
+    return y;
+  };
+
+  const svg = document.getElementById('tideSvg');
+
+  const points = visibleTides.map(t => ({ x: toX(t.min), y: waveY(t.min, t.type), type: t.type, min: t.min }));
+  let pathD = '';
+  if (points.length === 2) {
+    const cp = (points[1].x + points[0].x) / 2;
+    pathD = `M${points[0].x},${points[0].y} C${cp},${points[0].y} ${cp},${points[1].y} ${points[1].x},${points[1].y}`;
+  } else if (points.length === 3) {
+    const cp1x = (points[0].x + points[1].x) / 2;
+    const cp2x = (points[1].x + points[2].x) / 2;
+    pathD = `M${points[0].x},${points[0].y} C${cp1x},${points[0].y} ${cp1x},${points[1].y} ${points[1].x},${points[1].y} S${cp2x},${points[2].y} ${points[2].x},${points[2].y}`;
+  }
+
+  const nowX = toX(now);
+  let nowY = padT + drawH / 2;
+  if (pathD) {
+    const frac = (nowX - points[0].x) / (points[points.length-1].x - points[0].x);
+    if (points.length === 2) {
+      const t = Math.max(0, Math.min(1, frac));
+      nowY = (1-t)*(1-t)*points[0].y + 2*(1-t)*t*((points[0].y+points[1].y)/2) + t*t*points[1].y;
+    } else if (points.length === 3) {
+      const t = Math.max(0, Math.min(1, frac < 0.5 ? frac * 2 : (frac - 0.5) * 2));
+      const seg = frac < 0.5 ? [points[0], points[1]] : [points[1], points[2]];
+      nowY = (1-t)*(1-t)*seg[0].y + 2*(1-t)*t*((seg[0].y+seg[1].y)/2) + t*t*seg[1].y;
+    }
+  }
+
+  const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const axisColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)';
+  const textColor = isDark ? '#9b9990' : '#888780';
+  const primaryText = isDark ? '#e8e6e0' : '#2c2c2a';
+  const highColor = '#1D6FA8';
+  const lowColor = '#5DCAA5';
+  const waveColor = isDark ? '#2A8FCB' : '#1D6FA8';
+  const nowColor = '#EF9F27';
+
+  svg.innerHTML = `
+    <line x1="${padL}" y1="${padT + drawH/2}" x2="${svgW - padR}" y2="${padT + drawH/2}" stroke="${axisColor}" stroke-width="1"/>
+    <text x="${padL}" y="${padT + 7}" font-size="10" fill="${textColor}">High</text>
+    <text x="${padL}" y="${padT + drawH - 2}" font-size="10" fill="${textColor}">Low</text>
+    ${pathD ? `<path d="${pathD}" fill="none" stroke="${waveColor}" stroke-width="2.5" stroke-linecap="round"/>` : ''}
+    ${points.map(p => {
+      const col = p.type === 'high' ? highColor : lowColor;
+      const label = p.type === 'high' ? 'HIGH' : 'LOW';
+      const t = p.min;
+      const diff = now - t;
+      const isP = diff > 0;
+      return `
+        <circle cx="${p.x}" cy="${p.y}" r="5" fill="${col}" opacity="0.9"/>
+        <text x="${p.x}" y="${p.y > padT + drawH/2 ? p.y + 18 : p.y - 12}" text-anchor="middle" font-size="10" font-weight="500" fill="${col}" class="tide-label">${label}</text>
+        <text x="${p.x}" y="${p.y > padT + drawH/2 ? p.y + 30 : p.y - 24}" text-anchor="middle" font-size="11" fill="${primaryText}">${minToLabel(t)}</text>
+      `;
+    }).join('')}
+    <line x1="${nowX}" y1="${padT - 10}" x2="${nowX}" y2="${padT + drawH + 14}" stroke="${nowColor}" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <circle cx="${nowX}" cy="${nowY}" r="6" fill="${nowColor}"/>
+    <circle cx="${nowX}" cy="${nowY}" r="3" fill="white"/>
+    <rect x="${nowX - 22}" y="${padT - 22}" width="44" height="16" rx="8" fill="${nowColor}"/>
+    <text x="${nowX}" y="${padT - 11}" text-anchor="middle" font-size="10" font-weight="500" fill="white">NOW</text>
+  `;
+
+  const cards = document.getElementById('tideCards');
+  const cardCount = visibleTides.length;
+  cards.style.gridTemplateColumns = `repeat(${cardCount}, 1fr)`;
+  cards.innerHTML = visibleTides.map(t => {
+    const diff = now - t.min;
+    const isPast = diff > 0;
+    const col = t.type === 'high' ? highColor : lowColor;
+    const colBg = t.type === 'high' ? (isDark ? '#0C447C22' : '#E6F1FB') : (isDark ? '#08504122' : '#E1F5EE');
+    const label = t.type === 'high' ? 'High tide' : 'Low tide';
+    const badge = isPast ? 'Past' : 'Next';
+    const badgeBg = isPast ? (isDark ? '#44444120' : '#F1EFE8') : (isDark ? '#1D6FA820' : '#E6F1FB');
+    const badgeCol = isPast ? textColor : highColor;
+    return `<div style="background: var(--color-background-secondary); border-radius: 10px; padding: 10px 12px; border-left: 3px solid ${col};">
+      <div style="font-size: 10px; color: ${col}; font-weight: 500; margin-bottom: 2px;">${label}</div>
+      <div style="font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 2px;">${minToLabel(t.min)}</div>
+      <div style="font-size: 11px; color: var(--color-text-secondary);">${deltaLabel(diff)}</div>
+    </div>`;
+  }).join('');
+}
+render();
+</script>

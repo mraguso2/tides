@@ -1,0 +1,491 @@
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  :root{
+    --navy:#003B5C;
+    --navy-light:#004f7a;
+    --navy-dark:#002840;
+    --wave:#1D9E75;
+    --wave-light:#5DCAA5;
+    --amber:#EF9F27;
+    --high-col:#003B5C;
+    --low-col:#1D9E75;
+    --bg:#f5f7f9;
+    --card:#ffffff;
+    --text1:#111827;
+    --text2:#4b5563;
+    --text3:#9ca3af;
+    --border:rgba(0,59,92,0.1);
+    --radius:14px;
+    --radius-sm:8px;
+  }
+  .phone-shell{
+    background:#e8ecf0;
+    border-radius:44px;
+    padding:12px;
+    width:390px;
+    margin:0 auto;
+    border:1px solid #ccd0d6;
+  }
+  .phone-screen{
+    background:var(--bg);
+    border-radius:34px;
+    overflow:hidden;
+    height:820px;
+    overflow-y:auto;
+    scroll-behavior:smooth;
+    position:relative;
+  }
+  .phone-screen::-webkit-scrollbar{display:none;}
+
+  /* HEADER */
+  .site-header{
+    background:var(--navy);
+    padding:14px 20px 12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  .logo-wrap{display:flex;align-items:center;gap:10px;}
+  .logo-icon{width:32px;height:32px;flex-shrink:0;}
+  .logo-name{color:#fff;font-size:18px;font-weight:600;letter-spacing:-0.3px;font-family:Georgia,serif;}
+  .loc-pill{
+    background:rgba(255,255,255,0.12);
+    color:rgba(255,255,255,0.85);
+    font-size:11px;
+    padding:4px 10px;
+    border-radius:20px;
+    letter-spacing:0.5px;
+  }
+
+  /* SECTIONS */
+  .section{padding:16px 16px 0;}
+  .section-label{
+    font-size:11px;
+    font-weight:600;
+    color:var(--navy);
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    margin-bottom:10px;
+    opacity:0.6;
+  }
+
+  /* TIDE CARD */
+  .tide-card{
+    background:var(--card);
+    border-radius:var(--radius);
+    border:0.5px solid var(--border);
+    padding:16px;
+    margin-bottom:16px;
+  }
+  .now-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:4px;
+  }
+  .now-time{font-size:34px;font-weight:600;color:var(--text1);letter-spacing:-1px;line-height:1;}
+  .now-date{font-size:12px;color:var(--text3);}
+  .tide-svg-wrap{margin:14px 0 10px;}
+  .tide-chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;}
+  .tide-chip{
+    background:#f0f4f7;
+    border-radius:var(--radius-sm);
+    padding:10px 12px;
+    border-left:3px solid var(--chip-col,#003B5C);
+  }
+  .chip-label{font-size:10px;font-weight:600;color:var(--chip-col,#003B5C);margin-bottom:2px;letter-spacing:0.5px;}
+  .chip-time{font-size:15px;font-weight:600;color:var(--text1);}
+  .chip-delta{font-size:11px;color:var(--text2);margin-top:1px;}
+
+  /* 3-DAY TABLE */
+  .days-card{
+    background:var(--card);
+    border-radius:var(--radius);
+    border:0.5px solid var(--border);
+    overflow:hidden;
+    margin-bottom:16px;
+  }
+  .day-row{
+    display:grid;
+    grid-template-columns:80px 1fr 1fr;
+    align-items:center;
+    padding:12px 14px;
+    border-bottom:0.5px solid var(--border);
+    gap:0;
+  }
+  .day-row:last-child{border-bottom:none;}
+  .day-name{font-size:13px;font-weight:600;color:var(--text1);}
+  .day-date-sm{font-size:11px;color:var(--text3);margin-top:1px;}
+  .tide-pair{display:flex;flex-direction:column;gap:4px;}
+  .tide-entry{display:flex;align-items:center;gap:6px;}
+  .tide-badge{
+    font-size:9px;font-weight:700;
+    padding:2px 5px;border-radius:4px;
+    letter-spacing:0.5px;min-width:28px;text-align:center;
+  }
+  .badge-high{background:#e0eef8;color:#003B5C;}
+  .badge-low{background:#e0f5ec;color:#0a6644;}
+  .tide-time-sm{font-size:12px;color:var(--text2);}
+  .day-hdr{
+    background:var(--navy);
+    display:grid;
+    grid-template-columns:80px 1fr 1fr;
+    padding:8px 14px;
+    gap:0;
+  }
+  .day-hdr span{font-size:10px;font-weight:600;color:rgba(255,255,255,0.6);letter-spacing:1px;text-transform:uppercase;}
+
+  /* CALENDAR */
+  .cal-card{
+    background:var(--card);
+    border-radius:var(--radius);
+    border:0.5px solid var(--border);
+    padding:16px;
+    margin-bottom:16px;
+  }
+  .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .cal-month{font-size:16px;font-weight:600;color:var(--text1);}
+  .cal-btn{
+    background:none;border:0.5px solid var(--border);
+    border-radius:8px;padding:6px 10px;cursor:pointer;
+    color:var(--navy);font-size:14px;font-weight:500;
+  }
+  .cal-btn:hover{background:#f0f4f7;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+  .cal-day-hdr{font-size:10px;font-weight:600;color:var(--text3);text-align:center;padding:4px 0;letter-spacing:0.5px;}
+  .cal-day{
+    aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+    font-size:13px;color:var(--text2);border-radius:8px;cursor:pointer;
+    position:relative;
+  }
+  .cal-day:hover{background:#f0f4f7;}
+  .cal-day.today{background:var(--navy);color:#fff;font-weight:600;}
+  .cal-day.selected{background:var(--navy);color:#fff;font-weight:600;}
+  .cal-day.has-note::after{
+    content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);
+    width:4px;height:4px;border-radius:50%;background:var(--wave);
+  }
+  .cal-day.today.has-note::after,.cal-day.selected.has-note::after{background:#fff;}
+  .cal-day.other-month{color:var(--text3);opacity:0.5;}
+  .cal-day.disabled{color:var(--text3);opacity:0.3;cursor:default;}
+  .cal-sel-tides{
+    margin-top:14px;padding-top:14px;
+    border-top:0.5px solid var(--border);
+  }
+  .cal-tide-list{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;}
+  .cal-tide-item{
+    background:#f0f4f7;border-radius:8px;padding:8px 10px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .cal-tide-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .cal-tide-info{flex:1;}
+  .cal-tide-type{font-size:10px;font-weight:600;letter-spacing:0.5px;}
+  .cal-tide-time{font-size:13px;font-weight:600;color:var(--text1);}
+  .cal-tide-ht{font-size:10px;color:var(--text3);}
+
+  /* FOOTER */
+  .site-footer{
+    background:var(--navy);
+    padding:20px 20px 28px;
+    text-align:center;
+    margin-top:4px;
+  }
+  .footer-logo{color:#fff;font-size:15px;font-weight:600;font-family:Georgia,serif;margin-bottom:6px;}
+  .footer-locs{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:1px;margin-bottom:12px;}
+  .footer-wave{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;}
+  .footer-wave-line{height:1px;width:40px;background:rgba(255,255,255,0.15);}
+  .footer-note{font-size:10px;color:rgba(255,255,255,0.35);}
+</style>
+
+<div class="phone-shell">
+ <div class="phone-screen" id="screen">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="logo-wrap">
+      <svg class="logo-icon" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="15" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+        <path d="M16 6 L16 20" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M16 6 L21 14 L16 13 L11 14 Z" fill="rgba(255,255,255,0.9)"/>
+        <path d="M16 13 L21 14 L16 20" fill="rgba(255,255,255,0.4)"/>
+        <path d="M6 23 Q9 20 12 23 Q15 26 18 23 Q21 20 24 23 Q26 24.5 26 26 L6 26 Z" fill="rgba(255,255,255,0.25)"/>
+        <path d="M6 25 Q9 22.5 12 25 Q15 27.5 18 25 Q21 22.5 24 25 Q26 26 26 26 L6 26 Z" fill="rgba(255,255,255,0.4)"/>
+      </svg>
+      <span class="logo-name">Harbor Tides</span>
+    </div>
+    <div class="loc-pill">Northport, NY</div>
+  </header>
+
+  <!-- CURRENT TIDES -->
+  <div class="section" style="padding-top:16px;">
+    <div class="tide-card">
+      <div class="now-row">
+        <div class="now-time" id="liveTime">7:42 AM</div>
+        <div class="now-date" id="liveDate">Mon, Apr 6</div>
+      </div>
+      <div class="tide-svg-wrap">
+        <svg id="tideSvg" width="100%" viewBox="0 0 340 120" style="display:block;overflow:visible;"></svg>
+      </div>
+      <div class="tide-chips" id="tideChips"></div>
+    </div>
+  </div>
+
+  <!-- NEXT 3 DAYS -->
+  <div class="section">
+    <div class="section-label">Upcoming tides</div>
+    <div class="days-card">
+      <div class="day-hdr">
+        <span>Day</span><span>Morning</span><span>Afternoon</span>
+      </div>
+      <div id="daysTable"></div>
+    </div>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="section">
+    <div class="section-label">Tide calendar</div>
+    <div class="cal-card">
+      <div class="cal-nav">
+        <button class="cal-btn" id="prevBtn">&#8592;</button>
+        <div class="cal-month" id="calMonthLabel"></div>
+        <button class="cal-btn" id="nextBtn">&#8594;</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-sel-tides" id="calSelTides"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-logo">Harbor Tides</div>
+    <div class="footer-locs">Northport · Huntington · Centerport</div>
+    <div class="footer-wave">
+      <div class="footer-wave-line"></div>
+      <svg width="18" height="10" viewBox="0 0 18 10" fill="none">
+        <path d="M1 5 Q3 1 5 5 Q7 9 9 5 Q11 1 13 5 Q15 9 17 5" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+      </svg>
+      <div class="footer-wave-line"></div>
+    </div>
+    <div class="footer-note">Data updates every 15 minutes &nbsp;·&nbsp; NOAA Station 8510560</div>
+  </footer>
+
+ </div>
+</div>
+
+<script>
+const NAVY='#003B5C', HIGH_COL='#003B5C', LOW_COL='#1D9E75', AMBER='#EF9F27';
+
+function fmtTime(h,m){const ampm=h>=12?'PM':'AM';const hh=h%12||12;return `${hh}:${String(m).padStart(2,'0')} ${ampm}`;}
+function fmtTimeMins(mins){return fmtTime(Math.floor(mins/60),mins%60);}
+function deltaStr(diffMin){
+  const abs=Math.abs(Math.round(diffMin)),h=Math.floor(abs/60),m=abs%60;
+  const suf=diffMin>0?'ago':'away';
+  if(h===0)return `${m}m ${suf}`;
+  if(m===0)return `${h}h ${suf}`;
+  return `${h}h ${m}m ${suf}`;
+}
+
+const nowMin = 7*60+42;
+const TIDES = [
+  {min:5*60+14,type:'low'},{min:11*60+22,type:'high'},
+  {min:17*60+41,type:'low'},{min:23*60+55,type:'high'}
+];
+const NEXT_DAYS = [
+  {name:'Tuesday',date:'Apr 7',tides:[{type:'low',t:'5:48 AM'},{type:'high',t:'12:01 PM'},{type:'low',t:'6:14 PM'},{type:'high',t:'12:28 AM'}]},
+  {name:'Wednesday',date:'Apr 8',tides:[{type:'low',t:'6:22 AM'},{type:'high',t:'12:40 PM'},{type:'low',t:'6:47 PM'},{type:'high',t:'1:02 AM'}]},
+  {name:'Thursday',date:'Apr 9',tides:[{type:'low',t:'6:58 AM'},{type:'high',t:'1:19 PM'},{type:'low',t:'7:21 PM'},{type:'high',t:'1:38 AM'}]},
+];
+
+function buildTideViz(){
+  const past=TIDES.filter(t=>t.min<nowMin).slice(-1)[0];
+  const future=TIDES.filter(t=>t.min>=nowMin)[0];
+  let visible=[past,future].filter(Boolean);
+  const nearThr=120;
+  if(future&&(future.min-nowMin)<nearThr){
+    const extra=TIDES.filter(t=>t.min>future.min)[0];
+    if(extra)visible=[past,future,extra];
+  } else if(past&&(nowMin-past.min)<nearThr){
+    const extra=TIDES.filter(t=>t.min<past.min).slice(-1)[0];
+    if(extra)visible=[extra,past,future];
+  }
+  const allM=visible.map(t=>t.min);
+  const minT=Math.min(...allM,nowMin)-50,maxT=Math.max(...allM,nowMin)+50;
+  const span=maxT-minT;
+  const W=340,H=120,pL=16,pR=16,pT=28,pB=32;
+  const dW=W-pL-pR,dH=H-pT-pB;
+  const toX=m=>pL+((m-minT)/span)*dW;
+  const tideY=t=>t.type==='high'?pT+8:pT+dH-8;
+  const pts=visible.map(t=>({x:toX(t.min),y:tideY(t),type:t.type,min:t.min}));
+
+  let pathD='';
+  if(pts.length===2){
+    const cp=(pts[0].x+pts[1].x)/2;
+    pathD=`M${pts[0].x},${pts[0].y}C${cp},${pts[0].y} ${cp},${pts[1].y} ${pts[1].x},${pts[1].y}`;
+  } else if(pts.length>=3){
+    const cp1=(pts[0].x+pts[1].x)/2,cp2=(pts[1].x+pts[2].x)/2;
+    pathD=`M${pts[0].x},${pts[0].y}C${cp1},${pts[0].y} ${cp1},${pts[1].y} ${pts[1].x},${pts[1].y}S${cp2},${pts[2].y} ${pts[2].x},${pts[2].y}`;
+  }
+
+  const nowX=toX(nowMin);
+  const frac=(nowX-pts[0].x)/(pts[pts.length-1].x-pts[0].x);
+  let nowY=pT+dH/2;
+  if(pts.length===2){
+    const t=Math.max(0,Math.min(1,frac));
+    nowY=(1-t)*(1-t)*pts[0].y+2*(1-t)*t*((pts[0].y+pts[1].y)/2)+t*t*pts[1].y;
+  } else if(pts.length>=3){
+    const t2=Math.max(0,Math.min(1,frac<0.5?frac*2:(frac-0.5)*2));
+    const seg=frac<0.5?[pts[0],pts[1]]:[pts[1],pts[2]];
+    nowY=(1-t2)*(1-t2)*seg[0].y+2*(1-t2)*t2*((seg[0].y+seg[1].y)/2)+t2*t2*seg[1].y;
+  }
+
+  const midY=pT+dH/2;
+  let html=`<line x1="${pL}" y1="${midY}" x2="${W-pR}" y2="${midY}" stroke="rgba(0,59,92,0.07)" stroke-width="1"/>`;
+  html+=`<text x="${pL}" y="${pT+5}" font-size="9" fill="rgba(0,59,92,0.4)" font-family="system-ui">HIGH</text>`;
+  html+=`<text x="${pL}" y="${pT+dH+1}" font-size="9" fill="rgba(29,158,117,0.6)" font-family="system-ui">LOW</text>`;
+  if(pathD)html+=`<path d="${pathD}" fill="none" stroke="${NAVY}" stroke-width="2" stroke-linecap="round" opacity="0.7"/>`;
+  pts.forEach(p=>{
+    const col=p.type==='high'?HIGH_COL:LOW_COL;
+    const lbl=p.type==='high'?'HIGH':'LOW';
+    const yOff=p.y>midY?16:-10;
+    html+=`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4.5" fill="${col}"/>`;
+    html+=`<text x="${p.x.toFixed(1)}" y="${(p.y+yOff).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="600" fill="${col}" font-family="system-ui">${fmtTimeMins(p.min)}</text>`;
+  });
+  html+=`<line x1="${nowX.toFixed(1)}" y1="${pT-8}" x2="${nowX.toFixed(1)}" y2="${(pT+dH+10).toFixed(1)}" stroke="${AMBER}" stroke-width="1.5" stroke-dasharray="3 3"/>`;
+  html+=`<circle cx="${nowX.toFixed(1)}" cy="${nowY.toFixed(1)}" r="6" fill="${AMBER}"/>`;
+  html+=`<circle cx="${nowX.toFixed(1)}" cy="${nowY.toFixed(1)}" r="2.5" fill="white"/>`;
+  html+=`<rect x="${(nowX-16).toFixed(1)}" y="${(pT-20).toFixed(1)}" width="32" height="14" rx="7" fill="${AMBER}"/>`;
+  html+=`<text x="${nowX.toFixed(1)}" y="${(pT-10).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="700" fill="white" font-family="system-ui">NOW</text>`;
+  document.getElementById('tideSvg').innerHTML=html;
+
+  const chips=document.getElementById('tideChips');
+  const chipTides=visible.length===3?[visible[0],visible[1],visible[2]]:[past,future].filter(Boolean);
+  const cols=chipTides.length===3?'1fr 1fr 1fr':'1fr 1fr';
+  chips.style.gridTemplateColumns=cols;
+  chips.innerHTML=chipTides.map(t=>{
+    const diff=nowMin-t.min;
+    const col=t.type==='high'?HIGH_COL:LOW_COL;
+    const role=diff>0?(chipTides.indexOf(t)===0&&chipTides.length===3?'Earlier':'Past'):(chipTides.indexOf(t)===chipTides.length-1&&chipTides.length===3&&chipTides.indexOf(t)!==1?'Later':'Next');
+    const opacity=role==='Earlier'||role==='Later'?'0.55':'1';
+    return `<div class="tide-chip" style="--chip-col:${col};opacity:${opacity};">
+      <div class="chip-label">${t.type==='high'?'HIGH TIDE':'LOW TIDE'}</div>
+      <div class="chip-time">${fmtTimeMins(t.min)}</div>
+      <div class="chip-delta">${deltaStr(diff)}</div>
+    </div>`;
+  }).join('');
+}
+
+function buildDays(){
+  const el=document.getElementById('daysTable');
+  el.innerHTML=NEXT_DAYS.map(d=>{
+    const am=d.tides.slice(0,2),pm=d.tides.slice(2,4);
+    const amHtml=am.map(t=>`<div class="tide-entry"><span class="tide-badge ${t.type==='high'?'badge-high':'badge-low'}">${t.type.toUpperCase()}</span><span class="tide-time-sm">${t.t}</span></div>`).join('');
+    const pmHtml=pm.map(t=>`<div class="tide-entry"><span class="tide-badge ${t.type==='high'?'badge-high':'badge-low'}">${t.type.toUpperCase()}</span><span class="tide-time-sm">${t.t}</span></div>`).join('');
+    return `<div class="day-row">
+      <div><div class="day-name">${d.name}</div><div class="day-date-sm">${d.date}</div></div>
+      <div class="tide-pair">${amHtml}</div>
+      <div class="tide-pair">${pmHtml}</div>
+    </div>`;
+  }).join('');
+}
+
+let calYear=2026,calMonth=3;
+const today={y:2026,m:3,d:6};
+let selDate={y:2026,m:3,d:6};
+const minCal={y:2026,m:3};
+const maxCal={y:2027,m:11};
+
+function fakeTides(y,m,d){
+  const seed=(y*400+m*31+d);
+  const h1=Math.floor(4+((seed*7)%4)),m1=Math.floor(((seed*13)%60));
+  const h2=h1+6,m2=Math.floor(((seed*17)%60));
+  const h3=h2+6,m3=Math.floor(((seed*11)%60));
+  const h4=h3+6,m4=Math.floor(((seed*19)%60));
+  return [
+    {type:'low',t:fmtTime(h1%24,m1),ht:'0.4 ft'},
+    {type:'high',t:fmtTime(h2%24,m2),ht:'5.2 ft'},
+    {type:'low',t:fmtTime(h3%24,m3),ht:'0.6 ft'},
+    {type:'high',t:fmtTime(h4%24,m4),ht:'5.0 ft'},
+  ];
+}
+
+function buildCal(){
+  const label=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('calMonthLabel').textContent=`${label[calMonth]} ${calYear}`;
+  const days=['Su','Mo','Tu','We','Th','Fr','Sa'];
+  const first=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const prevDays=new Date(calYear,calMonth,0).getDate();
+  const canPrev=!(calYear===minCal.y&&calMonth<=minCal.m);
+  const canNext=!(calYear===maxCal.y&&calMonth>=maxCal.m);
+  document.getElementById('prevBtn').style.opacity=canPrev?'1':'0.3';
+  document.getElementById('prevBtn').disabled=!canPrev;
+  document.getElementById('nextBtn').style.opacity=canNext?'1':'0.3';
+  document.getElementById('nextBtn').disabled=!canNext;
+
+  let html=days.map(d=>`<div class="cal-day-hdr">${d}</div>`).join('');
+  for(let i=0;i<first;i++){
+    const d=prevDays-first+1+i;
+    html+=`<div class="cal-day other-month disabled">${d}</div>`;
+  }
+  for(let d=1;d<=daysInMonth;d++){
+    const isToday=d===today.d&&calMonth===today.m&&calYear===today.y;
+    const isSel=d===selDate.d&&calMonth===selDate.m&&calYear===selDate.y;
+    const isPast=new Date(calYear,calMonth,d)<new Date(today.y,today.m,today.d);
+    const cls=['cal-day',isToday?'today':'',isSel&&!isToday?'selected':'',isPast?'disabled':''].filter(Boolean).join(' ');
+    html+=`<div class="${cls}" onclick="selectDay(${d})">${d}</div>`;
+  }
+  document.getElementById('calGrid').innerHTML=html;
+  renderCalSel();
+}
+
+function renderCalSel(){
+  const tides=fakeTides(selDate.y,selDate.m,selDate.d);
+  const label=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const selStr=`${label[selDate.m]} ${selDate.d}, ${selDate.y}`;
+  const el=document.getElementById('calSelTides');
+  el.innerHTML=`<div style="font-size:12px;color:var(--text2);margin-bottom:8px;">Tides for <strong style="color:var(--text1);">${selStr}</strong></div>
+  <div class="cal-tide-list">${tides.map(t=>{
+    const col=t.type==='high'?HIGH_COL:LOW_COL;
+    return `<div class="cal-tide-item">
+      <div class="cal-tide-dot" style="background:${col};"></div>
+      <div class="cal-tide-info">
+        <div class="cal-tide-type" style="color:${col};">${t.type.toUpperCase()} TIDE</div>
+        <div class="cal-tide-time">${t.t}</div>
+        <div class="cal-tide-ht">${t.ht}</div>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function selectDay(d){
+  const isPast=new Date(calYear,calMonth,d)<new Date(today.y,today.m,today.d);
+  if(isPast)return;
+  selDate={y:calYear,m:calMonth,d};
+  buildCal();
+}
+
+document.getElementById('prevBtn').onclick=()=>{
+  if(calMonth===0){calMonth=11;calYear--;}else calMonth--;
+  buildCal();
+};
+document.getElementById('nextBtn').onclick=()=>{
+  if(calMonth===11){calMonth=0;calYear++;}else calMonth++;
+  buildCal();
+};
+
+function updateClock(){
+  const now=new Date();
+  document.getElementById('liveTime').textContent=now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  document.getElementById('liveDate').textContent=now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+}
+
+buildTideViz();
+buildDays();
+buildCal();
+updateClock();
+setInterval(updateClock,30000);
+</script>

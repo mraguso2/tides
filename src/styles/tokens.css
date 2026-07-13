@@ -1,0 +1,85 @@
+:root {
+	/* Navy — brand, headers, high tide */
+	--navy-900: #002840;
+	--navy-700: #003b5c;
+	--navy-500: #1d6fa8;
+	--navy-100: #e0eef8;
+
+	/* Seafoam — low tide, water accents */
+	--seafoam-700: #0a6644;
+	--seafoam-500: #1d9e75;
+	--seafoam-300: #5dcaa5;
+	--seafoam-100: #e0f5ec;
+
+	/* Amber — reserved for the NOW marker */
+	--amber-500: #ef9f27;
+
+	/* Sand — warm neutrals */
+	--sand-50: #fbfaf7;
+	--sand-100: #f6f3ec;
+	--sand-200: #f0ebe0;
+	--sand-300: #e4decf;
+
+	/* Ink — text */
+	--ink-900: #111827;
+	--ink-600: #4b5563;
+	--ink-400: #9ca3af;
+
+	/* Semantic */
+	--color-bg: var(--sand-100);
+	--color-surface: #ffffff;
+	--color-surface-sunken: var(--sand-200);
+	--color-surface-hover: var(--sand-300);
+	--color-text-primary: var(--ink-900);
+	--color-text-secondary: var(--ink-600);
+	--color-text-tertiary: var(--ink-400);
+	--color-border: rgb(0 59 92 / 0.12);
+	--color-tide-high: var(--navy-700);
+	--color-tide-high-bg: var(--navy-100);
+	--color-tide-low: var(--seafoam-500);
+	--color-tide-low-text: var(--seafoam-700);
+	--color-tide-low-bg: var(--seafoam-100);
+	--color-now: var(--amber-500);
+	--color-chrome: var(--navy-700);
+	--color-on-chrome: #ffffff;
+	--color-on-chrome-muted: rgb(255 255 255 / 0.6);
+
+	/* Typography */
+	--font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+	--font-display: georgia, "Times New Roman", serif;
+	--text-2xs: 0.625rem;
+	--text-xs: 0.6875rem;
+	--text-sm: 0.75rem;
+	--text-md: 0.8125rem;
+	--text-base: 0.9375rem;
+	--text-lg: 1rem;
+	--text-xl: 1.125rem;
+	--text-2xl: 1.5rem;
+	--text-3xl: 2.125rem;
+	--tracking-wide: 0.03em;
+	--tracking-wider: 0.09em;
+	--tracking-widest: 0.14em;
+
+	/* Spacing */
+	--space-05: 2px;
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 20px;
+	--space-6: 24px;
+	--space-8: 32px;
+
+	/* Shape */
+	--radius-xs: 4px;
+	--radius-sm: 8px;
+	--radius-md: 14px;
+	--radius-full: 999px;
+	--hairline: 0.5px;
+
+	/* Depth */
+	--shadow-card: 0 1px 2px rgb(0 40 64 / 0.04), 0 2px 8px rgb(0 40 64 / 0.04);
+
+	/* Motion */
+	--duration-fast: 150ms;
+}
