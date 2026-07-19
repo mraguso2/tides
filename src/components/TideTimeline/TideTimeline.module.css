@@ -42,6 +42,11 @@
 	font-size: 10px;
 	font-weight: 600;
 	fill: var(--color-tide-high);
+	/* Halo keeps callouts legible when the NOW line passes behind them */
+	paint-order: stroke;
+	stroke: var(--color-surface);
+	stroke-width: 3;
+	stroke-linejoin: round;
 }
 
 .tidePoint[data-type="L"] circle,

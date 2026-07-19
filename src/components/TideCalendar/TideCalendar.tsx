@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Minus, Sailboat } from "lucide-react";
 import { useState } from "react";
 import { formatHeight, formatTime12 } from "#/lib/format";
 import type { TideEntry } from "#/lib/noaa";
@@ -10,12 +10,12 @@ type TideCalendarProps = {
 	today: Date;
 	selectedDate: Date;
 	onSelectDate: (date: Date) => void;
-	/** True while a lazily-fetched year (2027) is still loading */
+	/** True while a lazily-fetched future year is still loading */
 	isSelectionLoading: boolean;
 };
 
-/** No dates beyond December 2027 are selectable */
-const MAX_MONTH_INDEX = 2027 * 12 + 11;
+/** Predictions are browsable a rolling 18 months ahead of the current month */
+const MONTHS_AHEAD = 18;
 
 const WEEKDAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
@@ -34,7 +34,7 @@ export function TideCalendar({
 	const month = monthIndex % 12;
 	const minMonthIndex = today.getFullYear() * 12 + today.getMonth();
 	const canPrev = monthIndex > minMonthIndex;
-	const canNext = monthIndex < MAX_MONTH_INDEX;
+	const canNext = monthIndex < minMonthIndex + MONTHS_AHEAD;
 
 	const firstWeekday = new Date(year, month, 1).getDay();
 	const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -129,25 +129,28 @@ export function TideCalendar({
 						No predictions available for this date.
 					</p>
 				) : (
-					<ul className={styles.tideList}>
+					<ul className={styles.tideList} key={selectedDate.toDateString()}>
 						{selectedTides.map((tide) => (
 							<li
 								className={styles.tideItem}
 								data-type={tide.type}
 								key={tide.time}
 							>
-								<span className={styles.tideDot} aria-hidden />
-								<div>
-									<div className={styles.tideType}>
-										{tide.type === "H" ? "High tide" : "Low tide"}
-									</div>
-									<div className={styles.tideTime}>
-										{formatTime12(tide.time)}
-									</div>
-									<div className={styles.tideHeight}>
-										{formatHeight(tide.heightFt)}
-									</div>
-								</div>
+								{/* <span className={styles.tideDot} aria-hidden /> */}
+								{tide.type === "H" ? (
+									<Sailboat size={12} aria-hidden />
+								) : (
+									<Minus size={12} aria-hidden />
+								)}
+								<span className={styles.tideType}>
+									{tide.type === "H" ? "High tide" : "Low tide"}
+								</span>
+								<span className={styles.tideTime}>
+									{formatTime12(tide.time)}
+								</span>
+								<span className={styles.tideHeight}>
+									{formatHeight(tide.heightFt)}
+								</span>
 							</li>
 						))}
 					</ul>

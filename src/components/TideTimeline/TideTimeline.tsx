@@ -9,11 +9,14 @@ type TideTimelineProps = {
 	now: Date;
 };
 
-// SVG coordinate space — scales with the card via viewBox
+// SVG coordinate space — scales with the card via viewBox.
+// Left pad reserves a gutter for the HIGH/LOW axis words; top pad reserves
+// a dedicated band for the NOW pill so it can never cover a time callout.
 const WIDTH = 340;
-const HEIGHT = 120;
-const PAD = { left: 16, right: 16, top: 28, bottom: 32 };
+const HEIGHT = 132;
+const PAD = { left: 48, right: 16, top: 34, bottom: 32 };
 const WINDOW_PAD_MS = 45 * 60_000;
+const LABEL_HALF_WIDTH = 24;
 
 function bezierY(y0: number, y1: number, t: number): number {
 	const mid = (y0 + y1) / 2;
@@ -78,10 +81,20 @@ export function TideTimeline({ tides, now }: TideTimelineProps) {
 				x2={WIDTH - PAD.right}
 				y2={midY}
 			/>
-			<text className={styles.axisHigh} x={PAD.left} y={PAD.top + 5}>
+			<text
+				className={styles.axisHigh}
+				x={PAD.left - 8}
+				y={PAD.top + 11}
+				textAnchor="end"
+			>
 				HIGH
 			</text>
-			<text className={styles.axisLow} x={PAD.left} y={PAD.top + drawH + 1}>
+			<text
+				className={styles.axisLow}
+				x={PAD.left - 8}
+				y={PAD.top + drawH - 5}
+				textAnchor="end"
+			>
 				LOW
 			</text>
 			{path && <path className={styles.wave} d={path} />}
@@ -93,7 +106,10 @@ export function TideTimeline({ tides, now }: TideTimelineProps) {
 				>
 					<circle cx={point.x} cy={point.y} r={4.5} />
 					<text
-						x={point.x}
+						x={Math.min(
+							Math.max(point.x, PAD.left + LABEL_HALF_WIDTH),
+							WIDTH - PAD.right - LABEL_HALF_WIDTH,
+						)}
 						y={point.y > midY ? point.y + 16 : point.y - 10}
 						textAnchor="middle"
 					>
@@ -102,11 +118,11 @@ export function TideTimeline({ tides, now }: TideTimelineProps) {
 				</g>
 			))}
 			<g className={styles.now}>
-				<line x1={nowX} y1={PAD.top - 8} x2={nowX} y2={PAD.top + drawH + 10} />
+				<line x1={nowX} y1={18} x2={nowX} y2={PAD.top + drawH + 10} />
 				<circle cx={nowX} cy={nowY} r={6} />
 				<circle className={styles.nowDot} cx={nowX} cy={nowY} r={2.5} />
-				<rect x={nowX - 16} y={PAD.top - 20} width={32} height={14} rx={7} />
-				<text x={nowX} y={PAD.top - 10} textAnchor="middle">
+				<rect x={nowX - 16} y={3} width={32} height={14} rx={7} />
+				<text x={nowX} y={13} textAnchor="middle">
 					NOW
 				</text>
 			</g>

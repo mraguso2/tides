@@ -1,6 +1,10 @@
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
-import { getContext } from "./integrations/tanstack-query/root-provider";
+import {
+	getContext,
+	persistOptions,
+} from "./integrations/tanstack-query/root-provider";
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
@@ -12,6 +16,14 @@ export function getRouter() {
 		scrollRestoration: true,
 		defaultPreload: "intent",
 		defaultPreloadStaleTime: 0,
+		Wrap: ({ children }) => (
+			<PersistQueryClientProvider
+				client={context.queryClient}
+				persistOptions={persistOptions}
+			>
+				{children}
+			</PersistQueryClientProvider>
+		),
 	});
 
 	setupRouterSsrQueryIntegration({ router, queryClient: context.queryClient });

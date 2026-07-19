@@ -5,7 +5,9 @@ export function SiteFooter() {
 	return (
 		<footer className={styles.footer}>
 			<p className={styles.wordmark}>Harbor Tides</p>
-			<p className={styles.locations}>Northport · Huntington · Centerport</p>
+			<p className={styles.locations}>
+				Eatons Neck · Northport · Huntington · Centerport
+			</p>
 			<div className={styles.divider} aria-hidden>
 				<span className={styles.dividerLine} />
 				<svg

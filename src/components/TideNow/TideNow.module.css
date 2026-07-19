@@ -6,6 +6,41 @@
 	padding: var(--space-4);
 }
 
+/* Wide screens: info + chips on the left, timeline breathing on the right */
+@container (min-width: 56rem) {
+	.card {
+		display: grid;
+		grid-template-columns: minmax(16rem, 2fr) 3fr;
+		grid-template-rows: auto auto 1fr;
+		grid-template-areas:
+			"now curve"
+			"status curve"
+			"chips curve";
+		column-gap: var(--space-8);
+		padding: var(--space-6) var(--space-8);
+	}
+
+	.nowRow {
+		grid-area: now;
+	}
+
+	.status {
+		grid-area: status;
+	}
+
+	.card > svg {
+		grid-area: curve;
+		align-self: center;
+	}
+
+	.chips {
+		grid-area: chips;
+		grid-auto-flow: row;
+		align-content: start;
+		margin-block-start: var(--space-4);
+	}
+}
+
 .empty {
 	color: var(--color-text-secondary);
 	font-size: var(--text-md);
@@ -24,6 +59,7 @@
 	font-weight: 600;
 	letter-spacing: -0.02em;
 	line-height: 1;
+	font-variant-numeric: tabular-nums;
 }
 
 .date {
@@ -92,6 +128,7 @@
 .chipTime {
 	font-size: var(--text-base);
 	font-weight: 600;
+	font-variant-numeric: tabular-nums;
 }
 
 .chipDelta {

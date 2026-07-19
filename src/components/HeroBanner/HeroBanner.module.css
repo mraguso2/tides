@@ -1,0 +1,26 @@
+.hero {
+	position: relative;
+	block-size: clamp(9rem, 26dvh, 16rem);
+	overflow: hidden;
+}
+
+.image {
+	inline-size: 100%;
+	block-size: 100%;
+	object-fit: cover;
+	object-position: center 60%;
+}
+
+.caption {
+	position: absolute;
+	inset-block-end: 0;
+	inset-inline: 0;
+	padding: var(--space-6) var(--space-5) var(--space-2);
+	background: linear-gradient(to top, rgb(0 40 64 / 0.55), transparent);
+	color: var(--color-on-chrome);
+	font-size: var(--text-2xs);
+	font-weight: 600;
+	letter-spacing: var(--tracking-widest);
+	text-transform: uppercase;
+	text-align: end;
+}

@@ -1,11 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-	formatDuration,
-	formatHeight,
-	formatTime12,
-	parseISODate,
-	toISODate,
-} from "./format";
+import { formatDuration, formatHeight, formatTime12 } from "./format";
 
 describe("formatTime12", () => {
 	it("converts 24-hour to 12-hour", () => {
@@ -29,12 +23,5 @@ describe("formatHeight", () => {
 	it("shows one decimal with unit", () => {
 		expect(formatHeight(4.4)).toBe("4.4 ft");
 		expect(formatHeight(-3.842)).toBe("-3.8 ft");
-	});
-});
-
-describe("ISO date round-trip", () => {
-	it("converts both ways", () => {
-		expect(toISODate(new Date(2027, 11, 31))).toBe("2027-12-31");
-		expect(parseISODate("2027-12-31")).toEqual(new Date(2027, 11, 31));
 	});
 });

@@ -6,27 +6,11 @@
 	overflow: hidden;
 }
 
-.headerRow,
 .dayRow {
 	display: grid;
-	grid-template-columns: 80px 1fr 1fr;
+	grid-template-columns: 88px 1fr;
+	gap: var(--space-3);
 	padding: var(--space-3) var(--space-4);
-}
-
-.headerRow {
-	background: var(--color-chrome);
-	padding-block: var(--space-2);
-
-	span {
-		font-size: var(--text-2xs);
-		font-weight: 600;
-		color: var(--color-on-chrome-muted);
-		letter-spacing: var(--tracking-wider);
-		text-transform: uppercase;
-	}
-}
-
-.dayRow {
 	align-items: center;
 	border-block-end: var(--hairline) solid var(--color-border);
 
@@ -45,9 +29,11 @@
 	color: var(--color-text-tertiary);
 }
 
-.pair {
+/* Reads chronologically: left to right, top to bottom */
+.tides {
 	display: grid;
-	gap: var(--space-1);
+	grid-template-columns: 1fr 1fr;
+	gap: var(--space-1) var(--space-3);
 }
 
 .tide {
@@ -76,4 +62,5 @@
 .time {
 	font-size: var(--text-sm);
 	color: var(--color-text-secondary);
+	font-variant-numeric: tabular-nums;
 }

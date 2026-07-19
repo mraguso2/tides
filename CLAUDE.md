@@ -68,7 +68,7 @@ src/
 │   ├── TideStrip/       # next 3 days compact view
 │   │   ├── TideStrip.tsx
 │   │   └── TideStrip.module.css
-│   ├── TideCalendar/    # date picker, capped at Dec 2027
+│   ├── TideCalendar/    # date picker, rolling 18-month cap
 │   │   ├── TideCalendar.tsx
 │   │   └── TideCalendar.module.css
 │   └── AdCard/          # placeholder for future local business ads
@@ -108,10 +108,12 @@ Swap `bdate=2026` → `bdate=2027` for the second year fetch.
 **Each entry contains:** `date`, `day`, `time`, `pred_in_ft`, `pred_in_cm`, `highlow` (`H` or `L`)
 
 **Fetching strategy:**
-- On init, fetch current year (2026) only
-- If user selects a 2027 date in the calendar, lazily enable the 2027 query via TanStack Query's `enabled` flag
-- Both queries use a 2-week `staleTime` and localStorage persistence via `persistQueryClient` + `@tanstack/localstorage-persister`
-- If 2027 data is already cached, do not refetch
+- On init, fetch the current year only
+- If the user selects a date in a future year (the rolling 18-month window can span up to two year boundaries), lazily enable that year's query via TanStack Query's `enabled` flag
+- All queries use a 4-week `staleTime` and localStorage persistence via `PersistQueryClientProvider` (`@tanstack/react-query-persist-client` + `@tanstack/query-sync-storage-persister`) wrapping the router in `router.Wrap`
+- `gcTime` must stay `Infinity` — 4 weeks in ms overflows the 32-bit `setTimeout` limit (~24.8 days), which makes GC fire immediately and delete restored queries; the persister's `maxAge` handles stored-data expiry
+- Tide data is client-only: no SSR loader prefetch (a loader fetch would hit NOAA on every server request). A warm cache must serve reloads with zero NOAA requests; only an empty or >4-week-old cache triggers a fetch
+- NOAA fetches must be non-fatal: the UI falls back to localStorage-persisted data (or a notice) when NOAA is down
 - Merge both datasets transparently — components never need to know which year they're reading from
 
 **Service Worker registration must be client-side only** — TanStack Start is SSR-capable and browser APIs cannot run server-side.
@@ -122,7 +124,7 @@ Swap `bdate=2026` → `bdate=2027` for the second year fetch.
 
 1. **TideNow (hero)** — current tide state: rising or falling, height, and time until the next high or low. Most important section, seen first on mobile.
 2. **TideStrip** — compact 3-day lookahead showing high/low times and heights.
-3. **TideCalendar** — date picker showing a selected day's full tide schedule. Hard cap: December 2027. No dates beyond that are selectable.
+3. **TideCalendar** — date picker showing a selected day's full tide schedule. Rolling cap: current month + 18 months. No months beyond that are browsable.
 
 Future: `<AdCard />` component slots for local business ads. Keep structure clean enough to drop these in without refactoring.
 
@@ -188,7 +190,7 @@ export function TideNow({ entry, nextEntry }: TideNowProps) {
 - Routes live in `src/routes/`. File name becomes the route path. The router auto-generates `routeTree.gen.ts` — never touch it.
 - Every route file uses `createFileRoute` at the top — never write routes manually.
 - Dynamic segments: `$paramName.tsx` → access with `Route.useParams()`
-- Loaders handle data fetching at the route level. Prefer loaders over fetching in `useEffect`.
+- Loaders handle data fetching at the route level. Prefer loaders over fetching in `useEffect`. Exception: tide data has no loader at all — it is client-only so NOAA is hit at most once per 4 weeks per device.
 - Navigate with `<Link to="/path">` from `@tanstack/react-router` — not `<a href>`.
 - Programmatic navigation: `const navigate = useNavigate()` → `navigate({ to: '/path' })`.
 - Server functions use `createServerFn` — these run server-side only. Don't put browser APIs in them.
@@ -208,8 +210,8 @@ export const tideKeys = {
 ```
 
 - Mutations invalidate relevant queries in `onSuccess` or `onSettled`. Always be specific — never call `invalidateQueries` with no arguments.
-- Use `useSuspenseQuery` in route components — pair with route loaders that prefetch.
-- localStorage persistence via `persistQueryClient` + `@tanstack/localstorage-persister` with a 2-week `staleTime`.
+- Tide data uses plain `useQuery` (no loader, no suspense) — NOAA outages must degrade to cached data, not crash SSR. Use `useSuspenseQuery` only for data that is guaranteed to resolve.
+- localStorage persistence via `PersistQueryClientProvider` in `router.Wrap` with a 4-week `staleTime`/`maxAge` and `gcTime: Infinity` (see NOAA section for the setTimeout-overflow rationale).
 
 ---
 

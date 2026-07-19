@@ -20,11 +20,6 @@ export function TideStrip({ entries, today }: TideStripProps) {
 
 	return (
 		<div className={styles.card}>
-			<div className={styles.headerRow}>
-				<span>Day</span>
-				<span>Morning</span>
-				<span>Afternoon</span>
-			</div>
 			{days.map(({ date, tides }) => (
 				<div className={styles.dayRow} key={date.toISOString()}>
 					<div>
@@ -38,23 +33,16 @@ export function TideStrip({ entries, today }: TideStripProps) {
 							})}
 						</div>
 					</div>
-					<TidePair tides={tides.filter((tide) => tide.time < "12:00")} />
-					<TidePair tides={tides.filter((tide) => tide.time >= "12:00")} />
-				</div>
-			))}
-		</div>
-	);
-}
-
-function TidePair({ tides }: { tides: TideEntry[] }) {
-	return (
-		<div className={styles.pair}>
-			{tides.map((tide) => (
-				<div className={styles.tide} key={tide.time}>
-					<span className={styles.badge} data-type={tide.type}>
-						{tide.type === "H" ? "HIGH" : "LOW"}
-					</span>
-					<span className={styles.time}>{formatTime12(tide.time)}</span>
+					<div className={styles.tides}>
+						{tides.map((tide) => (
+							<div className={styles.tide} key={tide.time}>
+								<span className={styles.badge} data-type={tide.type}>
+									{tide.type === "H" ? "HIGH" : "LOW"}
+								</span>
+								<span className={styles.time}>{formatTime12(tide.time)}</span>
+							</div>
+						))}
+					</div>
 				</div>
 			))}
 		</div>
