@@ -1,6 +1,6 @@
 .hero {
 	position: relative;
-	block-size: clamp(9rem, 26dvh, 16rem);
+	block-size: clamp(9rem, 30dvh, 16rem);
 	overflow: hidden;
 }
 

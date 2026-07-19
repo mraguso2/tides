@@ -14,7 +14,7 @@ export function HeroBanner() {
 				alt="Sandy beach and lighthouse at Eatons Neck on Long Island Sound"
 				fetchPriority="high"
 			/>
-			<p className={styles.caption}>Eatons Neck · Long Island Sound</p>
+			{/* <p className={styles.caption}>Eatons Neck · Long Island Sound</p> */}
 		</div>
 	);
 }
