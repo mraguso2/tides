@@ -6,6 +6,7 @@ import { SiteHeader } from "#/components/SiteHeader/SiteHeader";
 import { TideCalendar } from "#/components/TideCalendar/TideCalendar";
 import { TideNow } from "#/components/TideNow/TideNow";
 import { TideStrip } from "#/components/TideStrip/TideStrip";
+import { WaveDivider } from "#/components/WaveDivider/WaveDivider";
 import { useTideData } from "#/hooks/useTideData";
 import { stationNow } from "#/lib/tides";
 import styles from "./index.module.css";
@@ -28,6 +29,7 @@ function Home() {
 		<div className={styles.page}>
 			<SiteHeader />
 			<HeroBanner />
+			<WaveDivider />
 			<main className={styles.main}>
 				{entries.length === 0 ? (
 					<section className={styles.notice} aria-live="polite">

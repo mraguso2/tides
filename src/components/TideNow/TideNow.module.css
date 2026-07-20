@@ -102,8 +102,7 @@
 	border-radius: var(--radius-sm);
 	padding: var(--space-2) var(--space-3);
 	border: 5px solid transparent;
-	
-	
+
 	&[data-type="L"] {
 		border-color: rgb(244 244 244);
 	}

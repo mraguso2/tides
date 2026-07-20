@@ -1,0 +1,31 @@
+.divider {
+	position: relative;
+	block-size: 40px;
+	inset-block-start: -30px;
+}
+
+.wave {
+	block-size: 40px;
+	rotate: 180deg;
+	mask:
+		radial-gradient(37.85px at 50% calc(100% - 51.3px), #000 99%, #0000 101%)
+		calc(50% - 36px) 0 / 72px 100%,
+		radial-gradient(37.85px at 50% calc(100% + 33.3px), #0000 99%, #000 101%)
+		50% calc(100% - 18px) / 72px 100% repeat-x;
+
+	&[data-layer="1"] {
+		background: #d4feff;
+	}
+
+	&[data-layer="2"] {
+		background: #013b5c;
+		position: relative;
+		inset-block-start: -30px;
+	}
+
+	&[data-layer="3"] {
+		background: #f7f3ec;
+		position: relative;
+		inset-block-start: -60px;
+	}
+}
