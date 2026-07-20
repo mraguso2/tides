@@ -29,7 +29,7 @@ function Home() {
 		<div className={styles.page}>
 			<SiteHeader />
 			<HeroBanner />
-			<WaveDivider />
+			<WaveDivider variant="hero" />
 			<main className={styles.main}>
 				{entries.length === 0 ? (
 					<section className={styles.notice} aria-live="polite">
@@ -71,6 +71,7 @@ function Home() {
 					</>
 				)}
 			</main>
+			<WaveDivider variant="footer" />
 			<SiteFooter />
 		</div>
 	);

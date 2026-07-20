@@ -15,7 +15,7 @@
 
 .locations {
 	font-size: var(--text-xs);
-	color: rgb(255 255 255 / 0.5);
+	color: var(--color-on-chrome);
 	letter-spacing: var(--tracking-wider);
 	margin-block-end: var(--space-3);
 }
@@ -36,5 +36,5 @@
 
 .note {
 	font-size: var(--text-2xs);
-	color: rgb(255 255 255 / 0.35);
+	color: var(--color-on-chrome);
 }

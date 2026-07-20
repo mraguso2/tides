@@ -12,6 +12,7 @@ dist-ssr
 __unconfig*
 todos.json
 .playwright-mcp/
+scripts/
 
 .dev.vars*
 !.dev.vars.example

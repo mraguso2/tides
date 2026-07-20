@@ -1,12 +1,28 @@
 .divider {
 	position: relative;
-	block-size: 40px;
 	inset-block-start: -30px;
+
+	&[data-variant="hero"] {
+		block-size: 40px;
+		--wave-rotate: 180deg;
+		--wave-1-bg: #d4feff;
+		--wave-2-bg: #013b5c;
+		--wave-3-bg: #f7f3ec;
+	}
+
+	&[data-variant="footer"] {
+		block-size: 10px;
+		margin-top: var(--space-5);
+		--wave-rotate: 180deg;
+		--wave-1-bg: #ffffff;
+		--wave-2-bg: #d4feff;
+		--wave-3-bg: #013b5c;
+	}
 }
 
 .wave {
 	block-size: 40px;
-	rotate: 180deg;
+	rotate: var(--wave-rotate);
 	mask:
 		radial-gradient(37.85px at 50% calc(100% - 51.3px), #000 99%, #0000 101%)
 		calc(50% - 36px) 0 / 72px 100%,
@@ -14,17 +30,17 @@
 		50% calc(100% - 18px) / 72px 100% repeat-x;
 
 	&[data-layer="1"] {
-		background: #d4feff;
+		background: var(--wave-1-bg);
 	}
 
 	&[data-layer="2"] {
-		background: #013b5c;
+		background: var(--wave-2-bg);
 		position: relative;
 		inset-block-start: -30px;
 	}
 
 	&[data-layer="3"] {
-		background: #f7f3ec;
+		background: var(--wave-3-bg);
 		position: relative;
 		inset-block-start: -60px;
 	}
