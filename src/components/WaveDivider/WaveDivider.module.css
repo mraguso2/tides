@@ -1,6 +1,10 @@
 .divider {
 	position: relative;
 	inset-block-start: -30px;
+	/* Exposes `cqw` units to the boat animation so its x position tracks the
+	   divider width (capped by the page's max-inline-size) rather than the
+	   raw viewport. */
+	container-type: inline-size;
 
 	&[data-variant="hero"] {
 		block-size: 40px;
@@ -12,7 +16,9 @@
 
 	&[data-variant="footer"] {
 		block-size: 10px;
-		margin-top: var(--space-5);
+		/* Extra headroom above the wave so the drifting sailboat clears the
+		   tide calendar card above it. */
+		margin-block-start: var(--space-9);
 		--wave-rotate: 180deg;
 		--wave-1-bg: #ffffff;
 		--wave-2-bg: #d4feff;
@@ -44,4 +50,24 @@
 		position: relative;
 		inset-block-start: -60px;
 	}
+}
+
+/* Sailboat drifts across the divider driven by a rAF loop in the component
+   (see WaveDivider.tsx). `overflow: hidden` on the track prevents the boat
+   from adding horizontal page scroll when it sits off-screen at either end. */
+.boatTrack {
+	position: absolute;
+	inset-inline: 0;
+	inset-block-start: -15px;
+	block-size: 40px;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.boat {
+	position: absolute;
+	inset-block-start: 6px;
+	color: var(--navy-700);
+	/* filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.4)); */
+	will-change: transform;
 }
