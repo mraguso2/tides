@@ -14,16 +14,7 @@
 	font-size: 9px;
 	font-weight: 600;
 	letter-spacing: var(--tracking-wider);
-}
-
-.axisHigh {
-	fill: var(--color-tide-high);
-	opacity: 0.45;
-}
-
-.axisLow {
-	fill: var(--color-tide-low);
-	opacity: 0.65;
+	fill: var(--navy-900);
 }
 
 .wave {
@@ -35,23 +26,18 @@
 }
 
 .tidePoint circle {
-	fill: var(--color-tide-high);
+	fill: var(--navy-900);
 }
 
 .tidePoint text {
 	font-size: 10px;
 	font-weight: 600;
-	fill: var(--color-tide-high);
+	fill: var(--navy-900);
 	/* Halo keeps callouts legible when the NOW line passes behind them */
 	paint-order: stroke;
 	stroke: var(--color-surface);
 	stroke-width: 3;
 	stroke-linejoin: round;
-}
-
-.tidePoint[data-type="L"] circle,
-.tidePoint[data-type="L"] text {
-	fill: var(--color-tide-low);
 }
 
 .now line {

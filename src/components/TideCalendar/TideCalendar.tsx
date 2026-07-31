@@ -136,7 +136,6 @@ export function TideCalendar({
 								data-type={tide.type}
 								key={tide.time}
 							>
-								{/* <span className={styles.tideDot} aria-hidden /> */}
 								{tide.type === "H" ? (
 									<Sailboat size={12} aria-hidden />
 								) : (

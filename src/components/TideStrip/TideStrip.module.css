@@ -51,11 +51,12 @@
 	min-inline-size: 5ch;
 	text-align: center;
 	background: var(--color-tide-high-bg);
-	color: var(--color-tide-high);
+	color: var(--navy-900);
 
+	/* Warm sand for the low pill (green would read as "positive"; the user's
+	   focus is high tide, so low gets a neutral warm tone instead). */
 	&[data-type="L"] {
-		background: var(--color-tide-low-bg);
-		color: var(--color-tide-low-text);
+		background: var(--sand-300);
 	}
 }
 

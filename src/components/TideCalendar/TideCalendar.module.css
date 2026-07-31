@@ -137,27 +137,11 @@
 	}
 }
 
-.tideDot {
-	inline-size: var(--space-2);
-	block-size: var(--space-2);
-	border-radius: var(--radius-full);
-	background: var(--color-tide-high);
-	align-self: center;
-
-	.tideItem[data-type="L"] & {
-		background: var(--color-tide-low);
-	}
-}
-
 .tideType {
 	font-size: var(--text-xs);
 	letter-spacing: var(--tracking-wide);
 	text-transform: uppercase;
-	color: var(--color-tide-high);
-
-	.tideItem[data-type="L"] & {
-		color: var(--color-tide-low-text);
-	}
+	color: var(--navy-900);
 }
 
 .tideTime {

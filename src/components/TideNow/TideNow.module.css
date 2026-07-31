@@ -79,12 +79,8 @@
 		font-weight: 600;
 	}
 
-	&[data-direction="rising"] :is(svg, strong) {
-		color: var(--color-tide-high);
-	}
-
-	&[data-direction="falling"] :is(svg, strong) {
-		color: var(--color-tide-low-text);
+	:is(svg, strong) {
+		color: var(--navy-700);
 	}
 }
 
@@ -122,11 +118,7 @@
 	font-weight: 600;
 	letter-spacing: var(--tracking-wide);
 	text-transform: uppercase;
-	color: var(--color-tide-high);
-
-	.chip[data-type="L"] & {
-		color: var(--color-tide-low-text);
-	}
+	color: var(--navy-900);
 }
 
 .chipTime {
