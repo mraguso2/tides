@@ -9,6 +9,18 @@
 	z-index: 10;
 }
 
+.wordmark {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+}
+
+.logo {
+	color: var(--color-on-chrome);
+	inline-size: 22px;
+	block-size: 22px;
+}
+
 .name {
 	color: var(--color-on-chrome);
 	font-size: var(--text-xl);
