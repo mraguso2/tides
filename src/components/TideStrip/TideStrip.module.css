@@ -65,13 +65,11 @@
 	letter-spacing: var(--tracking-wide);
 	min-inline-size: 5ch;
 	text-align: center;
-	background: var(--color-tide-high-bg);
+	/* background: var(--color-tide-high-bg); */
 	color: var(--navy-900);
 
-	/* Warm sand for the low pill (green would read as "positive"; the user's
-	   focus is high tide, so low gets a neutral warm tone instead). */
-	&[data-type="L"] {
-		background: var(--sand-300);
+	&[data-type="H"] {
+		background: #d2feff;
 	}
 }
 
