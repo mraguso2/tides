@@ -24,8 +24,10 @@
 	color: var(--color-tide-high);
 	transition: background-color var(--duration-fast);
 
-	&:hover:not(:disabled) {
-		background: var(--color-surface-sunken);
+	@media (hover: hover) {
+		&:hover:not(:disabled) {
+			background: var(--color-surface-sunken);
+		}
 	}
 
 	&:disabled {
@@ -66,8 +68,10 @@
 	border-radius: var(--radius-sm);
 	transition: background-color var(--duration-fast);
 
-	&:hover:not(:disabled, [data-state="selected"]) {
-		background: var(--color-surface-sunken);
+	@media (hover: hover) {
+		&:hover:not(:disabled, [data-state="selected"]) {
+			background: var(--color-surface-sunken);
+		}
 	}
 
 	&:disabled {

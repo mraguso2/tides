@@ -9,20 +9,25 @@ type TideStripProps = {
 };
 
 export function TideStrip({ entries, today }: TideStripProps) {
-	const days = [1, 2, 3].map((offset) => {
+	const days = [0, 1, 2, 3].map((offset) => {
 		const date = new Date(
 			today.getFullYear(),
 			today.getMonth(),
 			today.getDate() + offset,
 		);
-		return { date, tides: entriesForDate(entries, date) };
+		return {
+			date,
+			tides: entriesForDate(entries, date),
+			isToday: offset === 0,
+		};
 	});
 
 	return (
 		<div className={styles.card}>
-			{days.map(({ date, tides }) => (
+			{days.map(({ date, tides, isToday }) => (
 				<div className={styles.dayRow} key={date.toISOString()}>
 					<div>
+						{isToday && <span className={styles.todayBadge}>Today</span>}
 						<div className={styles.dayName}>
 							{date.toLocaleDateString("en-US", { weekday: "long" })}
 						</div>

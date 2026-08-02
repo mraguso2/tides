@@ -39,6 +39,9 @@ button {
 	border: none;
 	padding: 0;
 	cursor: pointer;
+	/* Kills the 300ms tap delay + keeps scrolling responsive when the touch
+	   starts on a button. */
+	touch-action: manipulation;
 }
 
 p,

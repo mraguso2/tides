@@ -1,7 +1,10 @@
 .page {
 	min-height: 100dvh;
 	display: grid;
-	grid-template-rows: auto auto 1fr auto;
+	/* 6 rows: header · hero photo · hero wave · main (fills) · footer wave · footer.
+	   `main` is the 1fr row — extra viewport height stretches the content area,
+	   not one of the decorative wave dividers. */
+	grid-template-rows: auto auto auto 1fr auto auto;
 }
 
 .main {
