@@ -2,7 +2,7 @@ html {
 	color-scheme: light;
 	/* Prevents elastic scroll past the top/bottom edge on mobile — otherwise
 	   the page can rubber-band below the footer once the layout settles. */
-	overscroll-behavior-y: none;
+	/* overscroll-behavior-y: none; */
 }
 
 body {
@@ -11,5 +11,5 @@ body {
 	color: var(--color-text-primary);
 	min-height: 100dvh;
 	/* Some Chromium versions respect overscroll-behavior on body, not html. */
-	overscroll-behavior-y: none;
+	/* overscroll-behavior-y: none; */
 }
