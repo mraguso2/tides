@@ -1,0 +1,34 @@
+{
+	"name": "Harbor Tides — Eatons Neck, NY",
+	"short_name": "Harbor Tides",
+	"description": "High and low tide times for Eatons Neck on Long Island Sound.",
+	"start_url": "/",
+	"scope": "/",
+	"id": "/",
+	"display": "standalone",
+	"orientation": "portrait",
+	"theme_color": "#003b5c",
+	"background_color": "#f6f3ec",
+	"lang": "en",
+	"categories": ["utilities", "weather", "lifestyle"],
+	"icons": [
+		{
+			"src": "icon.svg",
+			"type": "image/svg+xml",
+			"sizes": "any",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "logo192.png",
+			"type": "image/png",
+			"sizes": "192x192",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "logo512.png",
+			"type": "image/png",
+			"sizes": "512x512",
+			"purpose": "any maskable"
+		}
+	]
+}

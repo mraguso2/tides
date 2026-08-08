@@ -1,0 +1,71 @@
+.page {
+	min-height: 100dvh;
+	display: grid;
+	/* 6 rows: header · hero photo · hero wave · main (fills) · footer wave · footer.
+	   `main` is the 1fr row — extra viewport height stretches the content area,
+	   not one of the decorative wave dividers. */
+	grid-template-rows: auto auto auto 1fr auto auto;
+}
+
+.main {
+	container-type: inline-size;
+	inline-size: 100%;
+	max-inline-size: 520px;
+	margin-inline: auto;
+	padding: var(--space-4);
+	display: grid;
+	gap: var(--space-6);
+	align-content: start;
+}
+
+@media (min-width: 64rem) {
+	.main {
+		max-inline-size: 1080px;
+		grid-template-columns: 1fr 1fr;
+		align-items: start;
+		gap: var(--space-6);
+		padding: var(--space-6) var(--space-6) var(--space-8);
+
+		/* TideNow hero spans both columns; Upcoming + Calendar sit side by side */
+		> :first-child {
+			grid-column: 1 / -1;
+		}
+	}
+}
+
+.notice {
+	background: var(--color-surface);
+	border: var(--hairline) solid var(--color-border);
+	border-radius: var(--radius-md);
+	box-shadow: var(--shadow-card);
+	padding: var(--space-8) var(--space-5);
+	display: grid;
+	gap: var(--space-2);
+	justify-items: center;
+	text-align: center;
+
+	@media (min-width: 64rem) {
+		grid-column: 1 / -1;
+	}
+}
+
+.noticeTitle {
+	font-size: var(--text-lg);
+	font-weight: 600;
+}
+
+.noticeBody {
+	font-size: var(--text-sm);
+	color: var(--color-text-secondary);
+	max-inline-size: 40ch;
+}
+
+.sectionLabel {
+	font-size: var(--text-xs);
+	font-weight: 600;
+	color: var(--color-tide-high);
+	letter-spacing: var(--tracking-widest);
+	text-transform: uppercase;
+	opacity: 0.6;
+	margin-block-end: var(--space-2);
+}

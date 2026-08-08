@@ -1,0 +1,39 @@
+.header {
+	background: var(--color-chrome);
+	padding: var(--space-3) var(--space-5);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	position: sticky;
+	top: 0;
+	z-index: 10;
+}
+
+.wordmark {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+}
+
+.logo {
+	color: var(--color-on-chrome);
+	inline-size: 22px;
+	block-size: 22px;
+}
+
+.name {
+	color: var(--color-on-chrome);
+	font-size: var(--text-xl);
+	font-weight: 600;
+	font-family: var(--font-display);
+	letter-spacing: -0.02em;
+}
+
+.location {
+	background: rgb(255 255 255 / 0.12);
+	color: rgb(255 255 255 / 0.85);
+	font-size: var(--text-xs);
+	padding: var(--space-1) var(--space-3);
+	border-radius: var(--radius-full);
+	letter-spacing: var(--tracking-wide);
+}
