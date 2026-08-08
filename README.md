@@ -1,208 +1,90 @@
-Welcome to your new TanStack Start app! 
+# Harbor Tides
 
-# Getting Started
+Nautical-themed tide dashboard for **Eatons Neck, NY** (NOAA station 8515786) and the surrounding boating community of Northport, Centerport, and Huntington Harbor.
 
-To run this application:
+Live at **[harbortides.app](https://harbortides.app)**.
+
+- **Now** — current tide state, rising or falling, height, time until next high or low, with a bezier tide curve
+- **Next 4 days** — today plus a 3-day lookahead of high/low tides
+- **18-month calendar** — pick any future date within a rolling window to see that day's schedule
+- **Offline-friendly** — NOAA is fetched at most once per 4 weeks per device; every reload in between is served from localStorage
+- **Installable** — manifest + icons for Add-to-Home-Screen on iOS and Android
+
+## Stack
+
+- [TanStack Start](https://tanstack.com/start) — full-stack React on Vite
+- React 19, TypeScript (strict), CSS Modules — no Tailwind, no CSS-in-JS
+- [Biome](https://biomejs.dev/) for lint + format, [Vitest](https://vitest.dev/) for tests
+- Deployed to [Cloudflare Workers](https://developers.cloudflare.com/workers/) via the Cloudflare Vite plugin
+
+## Getting started
 
 ```bash
 pnpm install
-pnpm dev
+pnpm dev              # localhost:3000
 ```
 
-# Building For Production
-
-To build this application for production:
+Common scripts:
 
 ```bash
-pnpm build
+pnpm build            # production build
+pnpm preview          # build + preview
+pnpm test             # Vitest
+pnpm check            # Biome lint + format
+pnpm deploy           # build + wrangler deploy
+pnpm generate-routes  # regenerate TanStack Router route tree
 ```
 
-## Testing
+Use `pnpm` exclusively — never `npm` or `yarn`.
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+## Project layout
 
-```bash
-pnpm test
+```
+src/
+├── routes/                # file-based routes (routeTree.gen.ts is auto-generated — don't edit)
+│   ├── __root.tsx         # root layout: meta, manifest link, icons, dev panel
+│   └── index.tsx          # / — the single dashboard page
+├── components/            # UI components, one folder each with .tsx + .module.css
+│   ├── SiteHeader/        # sticky navy header with anchor logo + location badge
+│   ├── HeroBanner/        # Eatons Neck harbor photo
+│   ├── WaveDivider/       # two-tone scalloped SVG mask, drifting sailboat animation
+│   ├── TideNow/           # hero card: live clock + rising/falling + chips
+│   ├── TideTimeline/      # SVG tide-curve chart with NOW marker
+│   ├── TideStrip/         # 4-day upcoming rows with Today badge
+│   ├── TideCalendar/      # month calendar + selected-day tide list
+│   ├── SiteFooter/        # wordmark, locations, NOAA credit
+│   └── AdCard/            # unmounted sponsor slot component (v2)
+├── hooks/
+│   └── useTideData.ts     # merges current + selected-year queries, hydration-gated
+├── lib/
+│   ├── noaa.ts            # NOAA URL builder + XML → TideEntry parser (regex-based, Workers-safe)
+│   ├── tides.ts           # merge/sort, entriesForDate, findTideState (half-cosine height)
+│   ├── queryKeys.ts       # tide query key factory
+│   └── format.ts          # time/height formatters
+├── integrations/
+│   └── tanstack-query/    # QueryClient + persist options + devtools
+├── styles/
+│   ├── reset.css
+│   ├── tokens.css         # colors, fluid type scale, spacing, radius, shadows
+│   ├── global.css
+│   └── index.css
+├── router.tsx             # TanStack Router setup + PersistQueryClientProvider wrap
+└── main.tsx
+public/
+├── manifest.json          # PWA manifest (Harbor Tides, navy theme, portrait, maskable)
+├── icon.svg               # anchor logo, source of truth for all icons
+├── logo192.png            # Android A2HS + apple-touch-icon
+├── logo512.png            # Android A2HS high-DPI
+├── favicon-32.png         # tab favicon
+└── favicon-48.png
 ```
 
-## Styling
+## Data
 
-This project uses [CSS Modules](https://github.com/css-modules/css-modules) for component styling.
+Tide predictions come from the **NOAA CO-OPS Predictions API**, station 8515786 (Eatons Neck)
 
-## Linting & Formatting
+The browser calls NOAA directly. A full year (~1,400 entries) is cached in `localStorage` with a 4-week freshness window; the selected year is fetched lazily if the user browses into it via the calendar.
 
-This project uses [Biome](https://biomejs.dev/) for linting and formatting. The following scripts are available:
+## Credits
 
-
-```bash
-pnpm lint
-pnpm format
-pnpm check
-```
-
-
-## Deploy to Cloudflare Workers
-
-This project uses the Cloudflare Vite plugin (configured in `vite.config.ts`) and `wrangler.jsonc`:
-
-1. Install Wrangler: `npm install -g wrangler`
-2. Authenticate: `wrangler login`
-3. Deploy: `npx wrangler deploy`
-
-For production env vars, run `wrangler secret put MY_VAR` for each secret listed in `.env.example`. Public (non-secret) vars go in `wrangler.jsonc` under `vars`.
-
-KV, D1, R2, and Durable Object bindings are configured in `wrangler.jsonc` — see https://developers.cloudflare.com/workers/wrangler/configuration/.
-
-
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-  
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-  
-  return <div>Server time: {time}</div>
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+Tide data © NOAA CO-OPS.
