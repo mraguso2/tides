@@ -67,6 +67,16 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				href: "/logo192.png",
 			},
 		],
+		scripts: [
+			{
+				src: "https://cloud.umami.is/script.js",
+				defer: true,
+				"data-website-id": "286470b2-3bd6-4ae0-be16-abfd4294b61b",
+				// Tracker no-ops unless the hostname matches, so dev, `pnpm preview`,
+				// and *.workers.dev preview deploys stay out of the analytics.
+				"data-domains": "harbortides.app",
+			},
+		],
 	}),
 	shellComponent: RootDocument,
 });
